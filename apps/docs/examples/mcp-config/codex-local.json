@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "hadith-mcp": {
+      "command": "node",
+      "args": ["./packages/hadith-mcp/dist/cli.js"]
+    }
+  }
+}

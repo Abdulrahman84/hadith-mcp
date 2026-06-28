@@ -1,6 +1,6 @@
 # hadith-mcp
 
-`hadith-mcp` is a planned Model Context Protocol server for retrieving hadith text and metadata from auditable sources.
+`hadith-mcp` is a Model Context Protocol server for retrieving hadith text and metadata from auditable sources.
 
 The project goal is to give AI assistants and developer tools a strict source layer for the Sunnah: exact references, Arabic text, available English translations, source-attributed grading, and clear provenance. The MCP server should retrieve and cite source material; it should not act as a mufti or generate unsupported religious claims.
 
@@ -14,7 +14,7 @@ The project goal is to give AI assistants and developer tools a strict source la
 - Grades exposed only when they are source-attributed.
 - No model-generated explanation or interpretation returned by MCP tools.
 
-## Planned Tools
+## Implemented Fixture Tools
 
 - `list_collections`
 - `fetch_hadith`
@@ -29,6 +29,18 @@ See [docs/v1-build-plan.md](docs/v1-build-plan.md) for the implementation plan, 
 
 See [docs/future-product-plan.md](docs/future-product-plan.md) for how this MCP should support a later Quran/Hadith AI product in a separate repository.
 
+## Local Development
+
+```bash
+npm install
+npm run typecheck
+npm test
+npm run build
+node packages/hadith-mcp/dist/cli.js
+```
+
+The current MCP server is fixture-backed. The fixture records are synthetic placeholders for testing schemas and client integration; they are not real hadith text and must not be used for religious claims.
+
 ## Future Product Direction
 
 The Hadith MCP is intended to become one source layer for a broader Islamic source retrieval product that should live in a separate repository:
@@ -40,4 +52,4 @@ The Hadith MCP is intended to become one source layer for a broader Islamic sour
 
 ## Current Status
 
-This repository currently contains the project plan, source policy, and v1 build plan. Implementation has not started yet.
+This repository currently contains the project plan, source policy, v1 build plan, and a fixture-backed TypeScript MCP scaffold. Real hadith data import has not started yet.

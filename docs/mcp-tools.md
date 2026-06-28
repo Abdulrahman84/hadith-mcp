@@ -1,8 +1,10 @@
-# Planned MCP Tools
+# MCP Tools
+
+The current implementation registers all six v1 tools with synthetic fixture data. Fixture records exist only to test schemas and MCP client integration; they are not real hadith text.
 
 ## `list_collections`
 
-Returns available collections and metadata.
+Returns available fixture collections and metadata.
 
 Expected fields:
 
@@ -15,6 +17,8 @@ Expected fields:
 ## `fetch_hadith`
 
 Fetches one hadith by collection and number.
+
+Current scaffold behavior: returns a synthetic fixture record or a structured `hadith_not_found` error.
 
 Inputs:
 
@@ -39,6 +43,8 @@ Response must include:
 
 Searches Arabic and/or English hadith text.
 
+Current scaffold behavior: searches synthetic fixture records and returns snippets plus provenance notes.
+
 Inputs:
 
 - `query`
@@ -53,6 +59,8 @@ Returns ranked source records with snippets and references. It must not return g
 
 Checks whether a collection and hadith number exist.
 
+Current scaffold behavior: validates against the fixture records and returns suggestions for unknown references.
+
 Inputs:
 
 - `collection`
@@ -63,6 +71,8 @@ Returns a structured valid/invalid result with suggestions when possible.
 ## `get_hadith_metadata`
 
 Returns non-text metadata for a hadith.
+
+Current scaffold behavior: returns fixture metadata, numbering, source dataset, import version, and provenance notes.
 
 Inputs:
 
@@ -81,10 +91,11 @@ Expected metadata:
 
 Returns source-attributed grade metadata when available.
 
+Current scaffold behavior: most fixture records return `grade: null`; one synthetic fixture record returns a source-attributed test grade to verify the plumbing.
+
 Inputs:
 
 - `collection`
 - `hadith_number`
 
 If no attributed grade is available, the tool must return `grade: null` and explain the missing attribution in `provenance_notes`.
-

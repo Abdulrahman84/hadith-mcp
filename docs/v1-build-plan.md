@@ -132,6 +132,8 @@ Acceptance criteria:
 - No real hadith data is bundled yet except tiny test fixtures with explicit provenance notes.
 - Package boundaries are clear: MCP serving logic does not contain importer logic.
 
+Status: implemented with synthetic fixture records and an in-memory MCP client smoke test.
+
 ### 2. Data Audit Spike
 
 Tasks:
