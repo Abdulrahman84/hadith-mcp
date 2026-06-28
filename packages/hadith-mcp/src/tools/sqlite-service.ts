@@ -7,6 +7,7 @@ import {
 import { SqliteJsonClient, sqlString } from "../db/sqlite.js";
 import { searchTermsForQuery } from "../text/arabic-search.js";
 import type { CollectionSummary, Grade, HadithRecord, Language, SearchResult, ToolError } from "../types.js";
+import { localizeRecordForLanguage } from "./localization.js";
 import type { HadithService } from "./service.js";
 
 type CollectionRow = {
@@ -100,19 +101,22 @@ function shapeLanguage(record: HadithRecord, language: Language): HadithRecord {
 
 function recordFromRow(row: HadithRow, language: Language): HadithRecord {
   return shapeLanguage(
-    {
-      collection: row.collection,
-      display_name: row.display_name,
-      book: row.book,
-      chapter: row.chapter,
-      hadith_number: row.hadith_number,
-      arabic_text: row.arabic_text ?? "",
-      english_text: row.english_text,
-      grade: gradeFromRow(row),
-      source_dataset: row.source_dataset,
-      source_url_or_reference: row.source_url_or_reference,
-      provenance_notes: sourceProvenance(row)
-    },
+    localizeRecordForLanguage(
+      {
+        collection: row.collection,
+        display_name: row.display_name,
+        book: row.book,
+        chapter: row.chapter,
+        hadith_number: row.hadith_number,
+        arabic_text: row.arabic_text ?? "",
+        english_text: row.english_text,
+        grade: gradeFromRow(row),
+        source_dataset: row.source_dataset,
+        source_url_or_reference: row.source_url_or_reference,
+        provenance_notes: sourceProvenance(row)
+      },
+      language
+    ),
     language
   );
 }
