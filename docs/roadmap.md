@@ -32,6 +32,7 @@
 - Implement reference validation.
 - Implement source-attributed grade lookup.
 - Add MCP client examples.
+- Document local client setup with `HADITH_MCP_DB_PATH`.
 
 ## Milestone 5: Future Product
 

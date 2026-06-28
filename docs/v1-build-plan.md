@@ -195,6 +195,8 @@ Acceptance criteria:
 
 Status: SQLite-backed service mode is implemented behind `HADITH_MCP_DB_PATH`, with fixture-backed mode retained for tests and safe default startup. Integration tests run against a generated fixture SQLite database.
 
+Status: local MCP client examples are documented for Codex-style and Claude Desktop-style JSON configs using the SQLite-backed CLI path.
+
 ### 5. Developer Experience and Release
 
 Tasks:

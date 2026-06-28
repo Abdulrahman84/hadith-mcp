@@ -14,7 +14,7 @@ The project goal is to give AI assistants and developer tools a strict source la
 - Grades exposed only when they are source-attributed.
 - No model-generated explanation or interpretation returned by MCP tools.
 
-## Implemented Fixture Tools
+## Implemented MCP Tools
 
 - `list_collections`
 - `fetch_hadith`
@@ -23,7 +23,9 @@ The project goal is to give AI assistants and developer tools a strict source la
 - `get_hadith_metadata`
 - `get_hadith_grade`
 
-See [docs/mcp-tools.md](docs/mcp-tools.md) for the planned interface.
+See [docs/mcp-tools.md](docs/mcp-tools.md) for the implemented interface.
+
+See [docs/client-setup.md](docs/client-setup.md) for local MCP client configuration examples.
 
 See [docs/v1-build-plan.md](docs/v1-build-plan.md) for the implementation plan, release gates, and first sprint.
 
@@ -64,4 +66,4 @@ The Hadith MCP is intended to become one source layer for a broader Islamic sour
 
 ## Current Status
 
-This repository currently contains the project plan, source policy, v1 build plan, a fixture-backed TypeScript MCP scaffold, and a local meeAtif import path for candidate SQLite builds.
+This repository currently contains the project plan, source policy, v1 build plan, a TypeScript MCP server with fixture and SQLite-backed modes, and a local meeAtif import path for candidate SQLite builds.

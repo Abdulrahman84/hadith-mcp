@@ -1,8 +1,11 @@
 {
   "mcpServers": {
     "hadith-mcp": {
-      "command": "npx",
-      "args": ["hadith-mcp"]
+      "command": "node",
+      "args": ["/absolute/path/to/hadith-mcp/packages/hadith-mcp/dist/cli.js"],
+      "env": {
+        "HADITH_MCP_DB_PATH": "/absolute/path/to/hadith-mcp/data/generated/hadith-meeatif.sqlite"
+      }
     }
   }
 }
