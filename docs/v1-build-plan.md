@@ -157,6 +157,8 @@ Status: audit tooling is also implemented for `Open-Hadith-Data`. The generated 
 
 Status: audit tooling is implemented for `meeAtif/hadith_datasets` and `fawazahmed0/maktaba-grades-backup`. `meeAtif/hadith_datasets` is promising for Arabic, English, and grades, but blocked by Sunnah.com/text/translation/grade redistribution review. `maktaba-grades-backup` is promising for source-attributed grades in four Sunan collections, but blocked by missing license, missing parser/mapping work, and no Bukhari/Muslim grade coverage.
 
+Status: a meeAtif SQLite build command is implemented for local candidate data after owner acceptance of source-chain risk. It writes `data/generated/hadith-meeatif.sqlite`, which remains ignored by git.
+
 ### 3. Importer and SQLite Builder
 
 Tasks:

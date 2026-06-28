@@ -41,6 +41,7 @@ npm run audit:meeatif-hadith-datasets
 npm run audit:maktaba-grades-backup
 npm run audit:open-hadith-data
 npm run build:fixture-sqlite
+npm run build:meeatif-sqlite
 node packages/hadith-mcp/dist/cli.js
 ```
 
@@ -49,6 +50,8 @@ The current MCP server is fixture-backed. The fixture records are synthetic plac
 The audit commands write candidate-source reports to `data/generated/`. `hadith-api` is blocked by missing provenance and missing Arabic text. `Open-Hadith-Data` is the stronger Arabic candidate, but still needs source-chain review before bundled release.
 
 The fixture SQLite command writes a synthetic non-release database to `data/generated/hadith-fixture.sqlite`.
+
+The meeAtif SQLite command writes a local candidate database to `data/generated/hadith-meeatif.sqlite` after the project owner accepted the source-chain risk for local v1 import work.
 
 ## Future Product Direction
 

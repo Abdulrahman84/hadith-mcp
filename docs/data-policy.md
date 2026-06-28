@@ -23,6 +23,10 @@ Current Open-Hadith-Data blocker: source-chain review. Its README says the origi
 
 `meeAtif/hadith_datasets` is a strong all-in-one candidate for Arabic, English, and grades. `npm run audit:meeatif-hadith-datasets` found Six Books coverage, no missing Arabic rows, one missing English row, and grade sources including Al-Albani and Darussalam. It remains blocked because every inspected row references Sunnah.com and the dataset license metadata does not by itself establish redistribution rights for the hadith text, translations, or grade attributions.
 
+Project decision: proceed with `meeAtif/hadith_datasets` as a local v1 candidate import after owner acceptance of the source-chain risk. This does not erase the audit finding and does not represent independent legal clearance for third-party redistribution. Generated SQLite artifacts from this source remain ignored by git unless a later release decision explicitly includes the required data-license notice.
+
+The meeAtif importer uses the dataset's `In-book reference` as the canonical local `hadith_number` to avoid collapsing records where Sunnah.com URL suffixes repeat. The original Sunnah.com URL remains stored in `source_url_or_reference`. Rows with unparseable source references are skipped and must be reported by the import command.
+
 `fawazahmed0/maktaba-grades-backup` is a grade-source candidate, not a cleared bundled source. `npm run audit:maktaba-grades-backup` found 11 grade source books covering Abu Dawud, Tirmidhi, Nasa'i, and Ibn Majah with named graders. It remains blocked because no repository license was found, grade extraction/mapping is not implemented, and it does not cover Bukhari or Muslim grades.
 
 Sunnah.com and Dorar are important references, but they should not be bundled in v1 unless their terms explicitly allow the intended usage.
