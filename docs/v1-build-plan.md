@@ -19,17 +19,14 @@ V1 is successful when a developer can install the package locally, point an MCP 
 ## Current External Inputs
 
 - MCP TypeScript SDK: the official SDK is in a v2 transition as of 2026-06-28. The upstream README says v2 is pre-alpha and v1.x remains recommended for production use until the stable v2 release. The scaffold task must pin an explicit SDK line after checking the current release state.
-- Candidate data source: `fawazahmed0/hadith-api` is public, includes multiple languages and grades, and is released under the Unlicense at the repository level. Its own `References.md` points to multiple upstream sources, so v1 must audit text provenance and redistribution risk before bundling any generated SQLite data.
-- Open source concern: an open issue asks about the source and license of the Arabic texts. This is a release blocker unless answered by documentation, upstream clarification, or a narrower data posture.
+- Candidate data source: `meeAtif/hadith_datasets` provides Six Books coverage with Arabic, English where available, and source-attributed grades. It remains a local v1 import source after owner acceptance of source-chain risk; generated SQLite artifacts remain ignored until a later release decision includes a data-license notice.
 - Sunnah.com: useful as a reference and possible future integration, but not a v1 bundled data dependency. Its developer page says API access needs an API key, covers a portion of data, and offline dumps are not available yet.
 - Dorar: useful as a future enrichment or live integration candidate. Its public API page describes JSON/JSONP search access, but v1 must not bundle Dorar content unless terms explicitly allow the intended redistribution and packaging.
 
 Reference links:
 
 - https://github.com/modelcontextprotocol/typescript-sdk
-- https://github.com/fawazahmed0/hadith-api
-- https://github.com/fawazahmed0/hadith-api/blob/1/References.md
-- https://github.com/fawazahmed0/hadith-api/issues/129
+- https://github.com/meeAtif/hadith_datasets
 - https://sunnah.com/developers
 - https://dorar.net/article/389/%D8%AE%D8%AF%D9%85%D8%A9-%D9%88%D8%A7%D8%AC%D9%87%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%88%D8%B9%D8%A9-%D8%A7%D9%84%D8%AD%D8%AF%D9%8A%D8%AB%D9%8A%D8%A9-API
 
@@ -138,7 +135,7 @@ Status: implemented with synthetic fixture records and an in-memory MCP client s
 
 Tasks:
 
-- Download or read candidate `hadith-api` metadata, editions, and Six Books Arabic/English files.
+- Download or read candidate `meeAtif/hadith_datasets` metadata and Six Books Arabic/English/grade files.
 - Produce a local audit report covering coverage, source URLs, license notes, missing fields, duplicate hadith numbers, language alignment, and grade attribution.
 - Decide whether v1 can bundle generated SQLite, require user-local build, or ship only importer tooling until provenance is resolved.
 - Document every source-level concern in `docs/data-policy.md`.
@@ -146,16 +143,12 @@ Tasks:
 
 Acceptance criteria:
 
-- A generated data report exists and is reproducible.
+- A generated meeAtif data report exists and is reproducible.
 - Six Books coverage is measured by collection and language.
 - Every grade is classified as attributed, unattributed, or rejected.
 - Any unresolved text-license issue is visible as a release blocker.
 
-Status: audit tooling is implemented for `fawazahmed0/hadith-api`. The first generated report confirms Six Books Arabic and English coverage, but marks bundled v1 data as blocked due to missing edition-level source fields, missing record-level provenance, and missing Arabic text in some records.
-
-Status: audit tooling is also implemented for `Open-Hadith-Data`. The generated report shows complete Six Books Arabic coverage with no empty Arabic rows. It remains blocked only by source-chain review; Arabic-only text and missing grades are documented limitations rather than blockers.
-
-Status: audit tooling is implemented for `meeAtif/hadith_datasets` and `fawazahmed0/maktaba-grades-backup`. `meeAtif/hadith_datasets` is promising for Arabic, English, and grades, but blocked by Sunnah.com/text/translation/grade redistribution review. `maktaba-grades-backup` is promising for source-attributed grades in four Sunan collections, but blocked by missing license, missing parser/mapping work, and no Bukhari/Muslim grade coverage.
+Status: audit tooling is implemented for `meeAtif/hadith_datasets`. The generated report confirms Six Books coverage, no missing Arabic rows, one missing English row, and grade sources including Al-Albani and Darussalam.
 
 Status: a meeAtif SQLite build command is implemented for local candidate data after owner acceptance of source-chain risk. It writes `data/generated/hadith-meeatif.sqlite`, which remains ignored by git.
 

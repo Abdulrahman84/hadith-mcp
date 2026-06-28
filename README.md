@@ -36,10 +36,7 @@ npm install
 npm run typecheck
 npm test
 npm run build
-npm run audit:hadith-api
 npm run audit:meeatif-hadith-datasets
-npm run audit:maktaba-grades-backup
-npm run audit:open-hadith-data
 npm run build:fixture-sqlite
 npm run build:meeatif-sqlite
 node packages/hadith-mcp/dist/cli.js
@@ -47,11 +44,11 @@ node packages/hadith-mcp/dist/cli.js
 
 The current MCP server is fixture-backed. The fixture records are synthetic placeholders for testing schemas and client integration; they are not real hadith text and must not be used for religious claims.
 
-The audit commands write candidate-source reports to `data/generated/`. `hadith-api` is blocked by missing provenance and missing Arabic text. `Open-Hadith-Data` is the stronger Arabic candidate, but still needs source-chain review before bundled release.
+The meeAtif audit command writes the active candidate-source report to `data/generated/`.
 
 The fixture SQLite command writes a synthetic non-release database to `data/generated/hadith-fixture.sqlite`.
 
-The meeAtif SQLite command writes a local candidate database to `data/generated/hadith-meeatif.sqlite` after the project owner accepted the source-chain risk for local v1 import work.
+The meeAtif SQLite command writes a local candidate database to `data/generated/hadith-meeatif.sqlite` after the project owner accepted the source-chain risk for local v1 import work. Generated SQLite artifacts remain ignored by git until a later release decision includes the required data-license notice.
 
 ## Future Product Direction
 
@@ -64,4 +61,4 @@ The Hadith MCP is intended to become one source layer for a broader Islamic sour
 
 ## Current Status
 
-This repository currently contains the project plan, source policy, v1 build plan, and a fixture-backed TypeScript MCP scaffold. Real hadith data import has not started yet.
+This repository currently contains the project plan, source policy, v1 build plan, a fixture-backed TypeScript MCP scaffold, and a local meeAtif import path for candidate SQLite builds.
