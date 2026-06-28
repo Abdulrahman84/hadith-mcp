@@ -1,0 +1,32 @@
+# Data Policy
+
+## Principles
+
+- Prefer auditable, redistributable datasets.
+- Preserve source references and provenance.
+- Require Arabic text for every imported hadith.
+- Include English translation only when the source provides it.
+- Expose grades only when attribution is available.
+- Treat dataset licenses separately from the code license.
+
+## V1 Source Posture
+
+The initial candidate source is `fawazahmed0/hadith-api` because it is publicly available, permissively licensed, and includes hadith JSON data in multiple languages and grades. Before release, the importer must produce a data report that confirms coverage, provenance, missing fields, duplicate references, and grade attribution.
+
+Sunnah.com and Dorar are important references, but they should not be bundled in v1 unless their terms explicitly allow the intended usage.
+
+## Grading Policy
+
+Grades must be returned only when the imported source explicitly provides enough attribution to show where the grade came from. If attribution is missing, the MCP response must return `grade: null` and include a provenance note.
+
+Collection-level assumptions should not be silently converted into hadith-level grades.
+
+## Religious Boundary
+
+This project is a retrieval and citation layer. It must not:
+
+- Issue fatwas.
+- Present generated interpretation as sourced knowledge.
+- Hide disagreement or missing provenance.
+- Return uncited hadith text.
+
