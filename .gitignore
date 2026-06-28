@@ -14,7 +14,8 @@ coverage/
 *.db
 *.db-shm
 *.db-wal
-data/generated/
+data/generated/*
+!data/generated/README.md
 
 # Environment
 .env
@@ -29,4 +30,3 @@ data/generated/
 # Codex local workspace folders
 work/
 outputs/
-
