@@ -52,7 +52,9 @@ export const listCollectionsOutputShape = {
 
 export const referenceInputShape = {
   collection: z.string().min(1).describe("Collection id or alias, such as bukhari or sahih-bukhari."),
-  hadith_number: z.union([z.string().min(1), z.number().int().positive()]).describe("Collection-local hadith number.")
+  hadith_number: z
+    .union([z.string().min(1), z.number().int().positive()])
+    .describe("Collection-local number, collection-prefixed reference, or source URL/reference.")
 };
 
 export const fetchHadithInputShape = {

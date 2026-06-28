@@ -5,7 +5,6 @@ const base = {
   source_dataset_version: "0",
   source_dataset_url: "local fixture",
   source_license_note: "Synthetic test fixture. Not real hadith data.",
-  source_url_or_reference: "local synthetic fixture",
   provenance_note: "Synthetic fixture used only for SQLite builder and MCP integration tests."
 };
 
@@ -15,6 +14,7 @@ export const normalizedFixtureRows: NormalizedHadithSqliteRow[] = [
     collection: "bukhari",
     display_name: "Sahih al-Bukhari",
     hadith_number: "1",
+    source_url_or_reference: "https://example.test/source/bukhari:1",
     book_number: "1",
     book: "Fixture Book",
     chapter_number: "1",
@@ -28,6 +28,7 @@ export const normalizedFixtureRows: NormalizedHadithSqliteRow[] = [
     collection: "muslim",
     display_name: "Sahih Muslim",
     hadith_number: "1",
+    source_url_or_reference: "https://example.test/source/muslim:1a",
     book_number: "1",
     book: "Fixture Book",
     chapter_number: "1",
@@ -41,6 +42,7 @@ export const normalizedFixtureRows: NormalizedHadithSqliteRow[] = [
     collection: "tirmidhi",
     display_name: "Jami at-Tirmidhi",
     hadith_number: "1",
+    source_url_or_reference: "https://example.test/source/tirmidhi:1",
     book_number: "1",
     book: "Fixture Book",
     chapter_number: "1",

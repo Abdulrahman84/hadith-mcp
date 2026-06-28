@@ -51,7 +51,7 @@ The fixture SQLite command writes a synthetic non-release database to `data/gene
 
 The meeAtif SQLite command writes a local candidate database to `data/generated/hadith-meeatif.sqlite` after the project owner accepted the source-chain risk for local v1 import work. Set `HADITH_MCP_DB_PATH` to this database path to run SQLite-backed MCP tools locally. Generated SQLite artifacts remain ignored by git until a later release decision includes the required data-license notice.
 
-The meeAtif importer uses in-book references as `hadith_number` values, such as `10:1`, rather than simple collection-wide numbers. Use `validate_hadith_reference` for suggestions when an exact lookup misses.
+The meeAtif importer uses in-book references as canonical `hadith_number` values, such as `10:1`, rather than simple collection-wide numbers. SQLite-backed lookup also accepts collection-prefixed references such as `bukhari:10:1` and source references such as `https://sunnah.com/bukhari:603` or `bukhari:603` when the source row provides them. Use `validate_hadith_reference` for suggestions when an exact lookup misses.
 
 ## Future Product Direction
 

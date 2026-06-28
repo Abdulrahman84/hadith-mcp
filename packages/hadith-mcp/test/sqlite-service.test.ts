@@ -62,6 +62,30 @@ describe("sqlite-backed hadith service", () => {
     expect(output.result.provenance_notes.join(" ")).toContain("Source dataset");
   });
 
+  it("resolves collection-prefixed and source-url references", () => {
+    const service = createSqliteHadithService(dbPath);
+    const prefixed = service.fetchHadith({
+      collection: "ignored-when-reference-has-known-prefix",
+      hadith_number: "bukhari:1"
+    });
+    const sourceUrl = service.fetchHadith({
+      collection: "muslim",
+      hadith_number: "https://example.test/source/muslim:1a"
+    });
+
+    expect(() => fetchHadithOutputSchema.parse(prefixed)).not.toThrow();
+    expect(() => fetchHadithOutputSchema.parse(sourceUrl)).not.toThrow();
+
+    if ("error" in prefixed.result || "error" in sourceUrl.result) {
+      throw new Error("expected resolved SQLite records");
+    }
+
+    expect(prefixed.result.collection).toBe("bukhari");
+    expect(prefixed.result.hadith_number).toBe("1");
+    expect(sourceUrl.result.collection).toBe("muslim");
+    expect(sourceUrl.result.hadith_number).toBe("1");
+  });
+
   it("searches SQLite FTS and returns snippets only", () => {
     const service = createSqliteHadithService(dbPath);
     const output = service.searchHadith({
@@ -79,12 +103,14 @@ describe("sqlite-backed hadith service", () => {
 
   it("validates references and returns suggestions from SQLite", () => {
     const service = createSqliteHadithService(dbPath);
-    const valid = service.validateHadithReference({ collection: "tirmidhi", hadith_number: "1" });
-    const invalid = service.validateHadithReference({ collection: "unknown", hadith_number: "99" });
+    const valid = service.validateHadithReference({ collection: "unknown", hadith_number: "tirmidhi:1" });
+    const invalid = service.validateHadithReference({ collection: "bukhari", hadith_number: "99" });
 
     expect(() => validateReferenceOutputSchema.parse(valid)).not.toThrow();
     expect(() => validateReferenceOutputSchema.parse(invalid)).not.toThrow();
     expect(valid.valid).toBe(true);
+    expect(valid.canonical_collection).toBe("tirmidhi");
+    expect(valid.hadith_number).toBe("1");
     expect(invalid.valid).toBe(false);
     expect(invalid.suggestions.length).toBeGreaterThan(0);
   });
