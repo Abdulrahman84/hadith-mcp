@@ -10,6 +10,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "audit:hadith-api": "npm run build && node dist/audit-hadith-api.js --out-dir ../../data/generated",
+    "build:fixture-sqlite": "npm run build && node dist/build-fixture-sqlite.js",
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"

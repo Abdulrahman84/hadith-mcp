@@ -82,3 +82,6 @@ export function validateNormalizedRows(rows: NormalizedHadithRow[]): DataQuality
     )
   };
 }
+
+export { buildSqliteFromRows, renderBuildSql, type NormalizedHadithSqliteRow, type SqliteBuildResult } from "./sqlite/builder.js";
+export { sqliteSchemaSql } from "./sqlite/schema.js";

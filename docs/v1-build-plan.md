@@ -164,6 +164,7 @@ Tasks:
 - Store source dataset metadata and content hashes.
 - Build SQLite tables and FTS5 indexes.
 - Write import warnings for non-fatal issues.
+- Build and test SQLite first from synthetic fixture rows while real source data remains audit-blocked.
 
 Acceptance criteria:
 
