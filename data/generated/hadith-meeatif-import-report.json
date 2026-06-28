@@ -1,0 +1,140 @@
+{
+  "generated_at": "2026-06-28T14:36:59.867Z",
+  "source_dataset": {
+    "name": "meeAtif/hadith_datasets",
+    "version": "cd62605e4fef3c46968a5f9fdcccbbbffdf631b5",
+    "url": "https://huggingface.co/datasets/meeAtif/hadith_datasets",
+    "license_note": "Hugging Face metadata declares MIT; project owner accepted source-chain risk for local v1 candidate build."
+  },
+  "rows": {
+    "imported": 33736,
+    "skipped": 2,
+    "by_collection": {
+      "abu_dawud": 5276,
+      "bukhari": 7277,
+      "ibn_majah": 4079,
+      "muslim": 7368,
+      "nasai": 5683,
+      "tirmidhi": 4053
+    }
+  },
+  "text_coverage": {
+    "arabic_rows": 33736,
+    "english_rows": 33735,
+    "missing_english_rows": 1,
+    "missing_english_by_collection": {
+      "muslim": 1
+    }
+  },
+  "grade_coverage": {
+    "graded_rows": 18054,
+    "ungraded_rows": 15682,
+    "graded_by_collection": {
+      "abu_dawud": 4896,
+      "ibn_majah": 3933,
+      "nasai": 5320,
+      "tirmidhi": 3905
+    },
+    "ungraded_by_collection": {
+      "abu_dawud": 380,
+      "bukhari": 7277,
+      "ibn_majah": 146,
+      "muslim": 7368,
+      "nasai": 363,
+      "tirmidhi": 148
+    },
+    "grade_sources": {
+      "Al-Albani": 4898,
+      "Darussalam": 13156
+    }
+  },
+  "import_warnings": {
+    "total": 15685,
+    "by_code": {
+      "missing_english": 1,
+      "missing_grade": 15682,
+      "unparseable_reference": 2
+    },
+    "by_collection": {
+      "abu_dawud": 380,
+      "bukhari": 7277,
+      "ibn_majah": 146,
+      "muslim": 7369,
+      "nasai": 365,
+      "tirmidhi": 148
+    },
+    "samples": [
+      {
+        "code": "missing_english",
+        "collection": "muslim",
+        "source_reference": "https://sunnah.com/muslim:2525a",
+        "message": "English text is missing; row will be imported with english_text null."
+      },
+      {
+        "code": "missing_grade",
+        "collection": "bukhari",
+        "source_reference": "https://sunnah.com/bukhari:1",
+        "message": "No source-attributed grade is present; MCP should return grade null."
+      },
+      {
+        "code": "unparseable_reference",
+        "collection": "nasai",
+        "source_reference": "https://sunnah.com/nasai:",
+        "message": "Could not parse Sunnah.com reference."
+      },
+      {
+        "code": "missing_grade",
+        "collection": "bukhari",
+        "source_reference": "https://sunnah.com/bukhari:2",
+        "message": "No source-attributed grade is present; MCP should return grade null."
+      },
+      {
+        "code": "missing_grade",
+        "collection": "bukhari",
+        "source_reference": "https://sunnah.com/bukhari:3",
+        "message": "No source-attributed grade is present; MCP should return grade null."
+      },
+      {
+        "code": "missing_grade",
+        "collection": "bukhari",
+        "source_reference": "https://sunnah.com/bukhari:4",
+        "message": "No source-attributed grade is present; MCP should return grade null."
+      },
+      {
+        "code": "missing_grade",
+        "collection": "bukhari",
+        "source_reference": "https://sunnah.com/bukhari:5",
+        "message": "No source-attributed grade is present; MCP should return grade null."
+      },
+      {
+        "code": "missing_grade",
+        "collection": "bukhari",
+        "source_reference": "https://sunnah.com/bukhari:6",
+        "message": "No source-attributed grade is present; MCP should return grade null."
+      },
+      {
+        "code": "missing_grade",
+        "collection": "bukhari",
+        "source_reference": "https://sunnah.com/bukhari:7",
+        "message": "No source-attributed grade is present; MCP should return grade null."
+      },
+      {
+        "code": "missing_grade",
+        "collection": "bukhari",
+        "source_reference": "https://sunnah.com/bukhari:8",
+        "message": "No source-attributed grade is present; MCP should return grade null."
+      }
+    ]
+  },
+  "sqlite_validation": {
+    "total_warnings": 0,
+    "release_blockers": 0,
+    "by_code": {},
+    "samples": []
+  },
+  "release_notes": [
+    "This report describes a local v1 candidate import, not a cleared bundled data release.",
+    "Generated SQLite artifacts remain ignored by git until a later release decision includes the required data-license notice.",
+    "Grades are source-attributed only; missing grades must be returned as grade null."
+  ]
+}

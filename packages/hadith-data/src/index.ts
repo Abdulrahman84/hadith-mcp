@@ -86,3 +86,9 @@ export function validateNormalizedRows(rows: NormalizedHadithRow[]): DataQuality
 export { buildSqliteFromRows, renderBuildSql, type NormalizedHadithSqliteRow, type SqliteBuildResult } from "./sqlite/builder.js";
 export { sqliteSchemaSql } from "./sqlite/schema.js";
 export { normalizeMeeAtifBooks, fetchMeeAtifBookInputs, type MeeAtifImportResult, type MeeAtifImportWarning } from "./importers/meeatif.js";
+export {
+  createMeeAtifImportReport,
+  renderMeeAtifImportReportMarkdown,
+  type CreateMeeAtifImportReportArgs,
+  type MeeAtifImportReport
+} from "./reports/meeatif-import-report.js";

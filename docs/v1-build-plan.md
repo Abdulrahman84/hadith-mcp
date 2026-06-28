@@ -150,7 +150,7 @@ Acceptance criteria:
 
 Status: audit tooling is implemented for `meeAtif/hadith_datasets`. The generated report confirms Six Books coverage, no missing Arabic rows, one missing English row, and grade sources including Al-Albani and Darussalam.
 
-Status: a meeAtif SQLite build command is implemented for local candidate data after owner acceptance of source-chain risk. It writes `data/generated/hadith-meeatif.sqlite`, which remains ignored by git.
+Status: a meeAtif SQLite build command is implemented for local candidate data after owner acceptance of source-chain risk. It writes `data/generated/hadith-meeatif.sqlite`, which remains ignored by git, plus import reports at `data/generated/hadith-meeatif-import-report.json` and `data/generated/hadith-meeatif-import-report.md`.
 
 ### 3. Importer and SQLite Builder
 
