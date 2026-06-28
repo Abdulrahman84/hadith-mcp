@@ -67,7 +67,7 @@ export const content: Record<Locale, SiteContent> = {
         "A TypeScript MCP server for exact hadith lookup, Arabic and English search, source-attributed grades, and auditable SQLite provenance.",
       primary: "Run locally",
       secondary: "Read the tools",
-      note: "V1 is MCP-first. The public Quran/Hadith assistant belongs in a separate repository."
+      note: "Runs locally and returns citations, source references, and provenance notes with every record."
     },
     metrics: [
       ["33,736", "imported rows"],
@@ -93,7 +93,7 @@ export const content: Record<Locale, SiteContent> = {
       eyebrow: "Data posture",
       title: "The database is local. The provenance is explicit.",
       body:
-        "The current candidate import uses meeAtif/hadith_datasets after owner acceptance of source-chain risk for local v1 work. Generated SQLite data remains separate from the MIT code license.",
+        "The local candidate build uses meeAtif/hadith_datasets. The generated database and its import report stay separate from the MIT code license.",
       rows: [
         ["Coverage", "Six Books", "Bukhari, Muslim, Abu Dawud, Tirmidhi, Nasa'i, and Ibn Majah."],
         ["Warnings", "15,685", "Mostly missing grades, one missing English row, and two skipped references."],
@@ -104,20 +104,20 @@ export const content: Record<Locale, SiteContent> = {
       eyebrow: "Local setup",
       title: "Build the SQLite file, then point your MCP client at the CLI.",
       body:
-        "The examples use absolute paths for client configs. Without HADITH_MCP_DB_PATH, the server starts in fixture mode for schema tests only.",
+        "Build once, then use absolute paths in your MCP client configuration. HADITH_MCP_DB_PATH tells the server which SQLite file to read.",
       commandLabel: "Terminal",
       configLabel: "MCP config shape"
     },
     policy: {
       eyebrow: "Boundary",
-      title: "A source layer, not a mufti.",
+      title: "A source layer, not an authority.",
       body:
-        "Client prompts should preserve citations and missing provenance. Search results must not be converted into fatwas or scholarly adjudication.",
+        "Client prompts should preserve citations and missing provenance. The server returns cited records; interpretation belongs outside this package.",
       items: [
         ["Cite every text", "Collection, hadith number, source dataset, and source reference travel together."],
         ["Keep grades attributed", "No model-generated grades and no collection-level assumptions."],
         ["Expose gaps", "Missing English, missing grades, skipped rows, and source-chain notes remain visible."],
-        ["Keep products separate", "Quran/Tafsir orchestration and answer synthesis live outside this repo."]
+        ["Keep answers grounded", "Clients should answer from retrieved records, not from model memory."]
       ]
     },
     footer: "Read-only cited retrieval for the Sunnah."
@@ -127,70 +127,70 @@ export const content: Record<Locale, SiteContent> = {
     langName: "العربية",
     alternate: "English",
     nav: {
-      overview: "نظرة عامة",
+      overview: "الرئيسية",
       tools: "الأدوات",
       data: "البيانات",
       setup: "التشغيل",
-      policy: "الحدود"
+      policy: "الضوابط"
     },
     hero: {
-      eyebrow: "Hadith MCP / طبقة مصادر محلية",
-      title: "استرجاع السنة بإحالات واضحة لا بتخمين النموذج.",
+      eyebrow: "Hadith MCP / طبقة مصادر محلية (source layer)",
+      title: "استرجاع نصوص السنة بإحالات موثقة.",
       subtitle:
-        "خادم MCP مبني بـ TypeScript للبحث والاسترجاع الدقيق في الحديث، مع العربية والإنجليزية، والدرجات المنسوبة لمصدرها، وسجل SQLite قابل للمراجعة.",
-      primary: "شغله محليا",
+        "خادم (MCP) مبني بـ (TypeScript) للبحث في الحديث واسترجاعه بدقة، مع النص العربي والترجمة الإنجليزية عند توفرها، والدرجات المنسوبة إلى مصدرها، وقاعدة بيانات (SQLite) قابلة للمراجعة.",
+      primary: "تشغيل محلي",
       secondary: "اقرأ الأدوات",
-      note: "الإصدار الأول MCP أولا. المنتج العام للقرآن والحديث سيكون في مستودع مستقل."
+      note: "يعمل محليا، ويعيد مع كل نتيجة رقم الحديث ومرجع المصدر وملاحظات التوثيق."
     },
     metrics: [
-      ["33,736", "صفا مستوردا"],
-      ["الكتب الستة", "نطاق البداية"],
+      ["33,736", "صفوف مستوردة"],
+      ["الكتب الستة", "نطاق البيانات"],
       ["18,054", "درجة منسوبة"],
-      ["0", "تحذيرات تحقق SQLite"]
+      ["0", "تحذيرات تحقق (SQLite)"]
     ],
     toolsIntro: {
       eyebrow: "واجهة الأدوات",
-      title: "ست نداءات قراءة فقط لعملاء الذكاء الاصطناعي.",
+      title: "ست أدوات قراءة فقط لعملاء الذكاء الاصطناعي (AI clients).",
       body:
-        "يعيد الخادم سجلات مصدرية منظمة وملاحظات توثيق. لا يصدر أحكاما، ولا يستنتج الدرجات، ولا يولد تفسيرا دينيا."
+        "يعيد الخادم سجلات منظمة من المصدر مع ملاحظات التوثيق. لا يصدر أحكاما، ولا يستنتج الدرجات، ولا يولد تفسيرا دينيا."
     },
     tools: [
-      ["list_collections", "معرفات المجموعات، الأسماء، تغطية اللغات، واسم مجموعة البيانات."],
-      ["fetch_hadith", "استرجاع دقيق بالرقم الداخلي أو مرجع مع اسم المجموعة أو رابط المصدر."],
-      ["search_hadith", "مقاطع بحث SQLite FTS5 في النص العربي والإنجليزي."],
-      ["validate_hadith_reference", "تطبيع الأسماء، إرجاع المعرف القانوني، واقتراحات عند عدم المطابقة."],
-      ["get_hadith_metadata", "الكتاب، الباب، الترقيم، إصدار المصدر، وملاحظات التوثيق."],
-      ["get_hadith_grade", "الدرجات المنسوبة فقط، وإلا يعاد grade: null صراحة."]
+      ["list_collections", "يعرض معرفات الكتب، والأسماء، وتغطية اللغات، واسم مجموعة البيانات (dataset)."],
+      ["fetch_hadith", "يجلب الحديث برقم داخلي، أو مرجع مسبوق باسم الكتاب، أو رابط المصدر."],
+      ["search_hadith", "يبحث في النص العربي والإنجليزي باستخدام فهرسة (SQLite FTS5)."],
+      ["validate_hadith_reference", "يتحقق من المرجع، ويعيد الرقم المعتمد، ويقترح بدائل عند عدم وجود نتيجة."],
+      ["get_hadith_metadata", "يعرض الكتاب، والباب، والترقيم، وإصدار المصدر، وملاحظات التوثيق."],
+      ["get_hadith_grade", "يعرض الدرجة المنسوبة إلى مصدرها فقط، وإلا يعيد (grade: null)."]
     ],
     data: {
       eyebrow: "سياسة البيانات",
-      title: "قاعدة البيانات محلية، والتوثيق ظاهر.",
+      title: "قاعدة البيانات محلية، والتوثيق واضح.",
       body:
-        "مسار البيانات الحالي يستخدم meeAtif/hadith_datasets بعد قبول مالك المشروع لمخاطر سلسلة المصدر في عمل v1 المحلي. ملفات SQLite المولدة منفصلة عن رخصة كود MIT.",
+        "يعتمد التشغيل المحلي على مجموعة بيانات (dataset) باسم meeAtif/hadith_datasets. ملف قاعدة البيانات (SQLite) وتقرير الاستيراد منفصلان عن رخصة الكود (MIT).",
       rows: [
         ["التغطية", "الكتب الستة", "البخاري، مسلم، أبو داود، الترمذي، النسائي، وابن ماجه."],
-        ["التحذيرات", "15,685", "أغلبها درجات مفقودة، مع صف إنجليزي مفقود ومرجعين تم تخطيهما."],
-        ["مصادر الدرجات", "Darussalam / Al-Albani", "تعاد فقط عندما ينسبها المصدر المستورد."]
+        ["التحذيرات", "15,685", "معظمها درجات غير موجودة، مع صف واحد بلا ترجمة إنجليزية ومرجعين لم ينجح استيرادهما."],
+        ["مصادر الدرجات", "Darussalam / Al-Albani", "تعرض الدرجة فقط عندما تكون منسوبة في المصدر المستورد."]
       ]
     },
     setup: {
       eyebrow: "التشغيل المحلي",
-      title: "ابن ملف SQLite ثم وجه عميل MCP إلى واجهة التشغيل.",
+      title: "أنشئ ملف قاعدة البيانات (SQLite)، ثم اربط عميل (MCP) بواجهة التشغيل (CLI).",
       body:
-        "أمثلة الإعداد تستخدم مسارات مطلقة. من دون HADITH_MCP_DB_PATH يبدأ الخادم بوضع العينات الاختبارية فقط.",
-      commandLabel: "الطرفية",
-      configLabel: "شكل إعداد MCP"
+        "أنشئ البيانات مرة واحدة، ثم استخدم مسارا مطلقا في إعدادات العميل. المتغير (HADITH_MCP_DB_PATH) يحدد ملف قاعدة البيانات الذي يقرأه الخادم.",
+      commandLabel: "الأوامر (Terminal)",
+      configLabel: "إعدادات (MCP)"
     },
     policy: {
-      eyebrow: "الحدود",
-      title: "طبقة مصادر، لا جهة فتوى.",
+      eyebrow: "الضوابط",
+      title: "طبقة مصادر، وليست جهة إفتاء.",
       body:
-        "ينبغي لرسائل العميل الحفاظ على الإحالات وبيان نقص التوثيق. لا تتحول نتائج البحث إلى فتاوى أو ترجيحات علمية.",
+        "ينبغي للعميل أن يحافظ على الإحالات، وأن يبين نقص التوثيق عند وجوده. الخادم يعيد سجلات موثقة فقط، وأي تفسير أو ترجيح يبقى خارج هذه الحزمة.",
       items: [
-        ["كل نص بإحالته", "المجموعة، رقم الحديث، مجموعة البيانات، ومرجع المصدر تعاد معا."],
-        ["الدرجات منسوبة", "لا درجات مولدة بالنموذج ولا افتراضات من اسم الكتاب."],
-        ["أظهر الفجوات", "نقص الإنجليزية والدرجات والصفوف المتخطاة وملاحظات المصدر تبقى ظاهرة."],
-        ["افصل المنتج النهائي", "تنسيق القرآن والتفسير وصياغة الأجوبة خارج هذا المستودع."]
+        ["كل نص بإحالته", "اسم الكتاب، ورقم الحديث، ومجموعة البيانات (dataset)، ومرجع المصدر تعاد معا."],
+        ["الدرجات منسوبة", "لا درجات مولدة بالنموذج (model)، ولا افتراضات من اسم الكتاب."],
+        ["الفجوات ظاهرة", "نقص الترجمة أو الدرجة أو التوثيق يبقى واضحا في النتيجة."],
+        ["الأجوبة مبنية على الاسترجاع", "ينبغي للعميل أن يجيب من السجلات المسترجعة لا من ذاكرة النموذج (model)."]
       ]
     },
     footer: "استرجاع موثق للسنّة، للقراءة فقط."

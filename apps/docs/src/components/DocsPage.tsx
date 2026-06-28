@@ -45,7 +45,9 @@ export function DocsPage({ locale }: { locale: Locale }) {
             <img src="/assets/hadith-mcp-mark.svg" alt="" className="h-11 w-11" />
             <span>
               <strong className="block text-base font-black">Hadith MCP</strong>
-              <small className="block text-xs text-[#8a5b35]">{locale === "ar" ? "طبقة مصادر للسنّة" : "Sunnah source layer"}</small>
+              <small className="block text-xs text-[#8a5b35]">
+                {locale === "ar" ? "مصدر موثق للسنّة" : "Sunnah source layer"}
+              </small>
             </span>
           </Link>
           <nav className="flex gap-5 overflow-x-auto text-sm font-bold text-[#193d39]/75">
@@ -85,8 +87,10 @@ export function DocsPage({ locale }: { locale: Locale }) {
               <div className="mb-4 flex items-center gap-3">
                 <img src="/assets/hadith-mcp-mark.svg" alt="" className="h-14 w-14" />
                 <div>
-                  <strong className="block text-lg">v1 local build</strong>
-                  <span className="text-sm text-[#111c1d]/60">SQLite + stdio MCP</span>
+                  <strong className="block text-lg">{locale === "ar" ? "تشغيل محلي" : "Local run"}</strong>
+                  <span className="text-sm text-[#111c1d]/60">
+                    {locale === "ar" ? "قاعدة بيانات (SQLite) + خادم (MCP)" : "SQLite database + MCP server"}
+                  </span>
                 </div>
               </div>
               <dl className="grid grid-cols-2 gap-3">
@@ -102,7 +106,7 @@ export function DocsPage({ locale }: { locale: Locale }) {
               <code className="text-sm text-[#d8b66d]">HADITH_MCP_DB_PATH</code>
               <p className="mt-3 text-sm leading-6 text-white/70">
                 {locale === "ar"
-                  ? "متغير البيئة الذي ينقل الخادم من وضع العينات إلى قاعدة SQLite المحلية."
+                  ? "متغير البيئة (environment variable) الذي يحدد ملف قاعدة البيانات (SQLite)."
                   : "The environment variable that switches the server from fixture mode to the local SQLite database."}
               </p>
             </div>
