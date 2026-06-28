@@ -1,7 +1,22 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerHadithTools } from "./tools/register.js";
+import { createFixtureHadithService, type HadithService } from "./tools/service.js";
+import { createSqliteHadithService } from "./tools/sqlite-service.js";
 
-export function createHadithMcpServer(): McpServer {
+export type HadithMcpServerOptions = {
+  service?: HadithService;
+  dbPath?: string;
+};
+
+export function createHadithServiceFromEnv(env: NodeJS.ProcessEnv = process.env): HadithService {
+  const dbPath = env.HADITH_MCP_DB_PATH;
+  return dbPath === undefined || dbPath.trim().length === 0
+    ? createFixtureHadithService()
+    : createSqliteHadithService(dbPath);
+}
+
+export function createHadithMcpServer(options: HadithMcpServerOptions = {}): McpServer {
+  const service = options.service ?? (options.dbPath === undefined ? createFixtureHadithService() : createSqliteHadithService(options.dbPath));
   const server = new McpServer(
     {
       name: "hadith-mcp",
@@ -9,10 +24,10 @@ export function createHadithMcpServer(): McpServer {
     },
     {
       instructions:
-        "Read-only fixture-backed Hadith MCP. Do not use fixture data for religious claims; real source data requires the audited SQLite importer."
+        "Read-only Hadith MCP. Return cited source text and metadata only; do not issue fatwas or generated religious interpretation."
     }
   );
 
-  registerHadithTools(server);
+  registerHadithTools(server, service);
   return server;
 }

@@ -98,25 +98,6 @@ export const fixtureRecords: HadithRecord[] = [
   }
 ];
 
-export const collectionAliases = new Map<string, string>([
-  ["bukhari", "bukhari"],
-  ["sahih-bukhari", "bukhari"],
-  ["sahih_al_bukhari", "bukhari"],
-  ["muslim", "muslim"],
-  ["sahih-muslim", "muslim"],
-  ["abu-dawud", "abu_dawud"],
-  ["abu_dawud", "abu_dawud"],
-  ["abudawud", "abu_dawud"],
-  ["tirmidhi", "tirmidhi"],
-  ["jami-tirmidhi", "tirmidhi"],
-  ["nasai", "nasai"],
-  ["nasaii", "nasai"],
-  ["nasa'i", "nasai"],
-  ["ibn-majah", "ibn_majah"],
-  ["ibn_majah", "ibn_majah"],
-  ["ibnmajah", "ibn_majah"]
-]);
-
 export function fixtureCollections(): CollectionSummary[] {
   return fixtureRecords.map((record) => ({
     collection: record.collection,

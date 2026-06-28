@@ -193,6 +193,8 @@ Acceptance criteria:
 - Invalid references produce structured suggestions when possible.
 - Integration tests run against a small fixture SQLite database.
 
+Status: SQLite-backed service mode is implemented behind `HADITH_MCP_DB_PATH`, with fixture-backed mode retained for tests and safe default startup. Integration tests run against a generated fixture SQLite database.
+
 ### 5. Developer Experience and Release
 
 Tasks:

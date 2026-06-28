@@ -17,24 +17,34 @@ import {
   getHadithMetadata,
   listCollections,
   searchHadith,
-  validateHadithReference
+  validateHadithReference,
+  type HadithService
 } from "./service.js";
 
 function jsonText(value: unknown) {
   return [{ type: "text" as const, text: JSON.stringify(value, null, 2) }];
 }
 
-export function registerHadithTools(server: McpServer): void {
+export function registerHadithTools(server: McpServer, service?: HadithService): void {
+  const tools = service ?? {
+    fetchHadith,
+    getHadithGrade,
+    getHadithMetadata,
+    listCollections,
+    searchHadith,
+    validateHadithReference
+  };
+
   server.registerTool(
     "list_collections",
     {
       title: "List Hadith Collections",
-      description: "Return available fixture collections and metadata.",
+      description: "Return available hadith collections and metadata.",
       inputSchema: listCollectionsInputShape,
       outputSchema: listCollectionsOutputShape
     },
     async () => {
-      const structuredContent = listCollections();
+      const structuredContent = tools.listCollections();
       return { content: jsonText(structuredContent), structuredContent };
     }
   );
@@ -43,12 +53,12 @@ export function registerHadithTools(server: McpServer): void {
     "fetch_hadith",
     {
       title: "Fetch Hadith",
-      description: "Fetch one fixture-backed hadith record by collection and hadith number.",
+      description: "Fetch one cited hadith record by collection and hadith number.",
       inputSchema: fetchHadithInputShape,
       outputSchema: fetchHadithOutputShape
     },
     async (args) => {
-      const structuredContent = fetchHadith(args);
+      const structuredContent = tools.fetchHadith(args);
       return { content: jsonText(structuredContent), structuredContent };
     }
   );
@@ -57,12 +67,12 @@ export function registerHadithTools(server: McpServer): void {
     "search_hadith",
     {
       title: "Search Hadith",
-      description: "Search fixture-backed Arabic and English hadith text. Returns snippets and citations only.",
+      description: "Search Arabic and English hadith text. Returns snippets and citations only.",
       inputSchema: searchHadithInputShape,
       outputSchema: searchHadithOutputShape
     },
     async (args) => {
-      const structuredContent = searchHadith(args);
+      const structuredContent = tools.searchHadith(args);
       return { content: jsonText(structuredContent), structuredContent };
     }
   );
@@ -71,12 +81,12 @@ export function registerHadithTools(server: McpServer): void {
     "validate_hadith_reference",
     {
       title: "Validate Hadith Reference",
-      description: "Check whether a collection and hadith number exist in the fixture dataset.",
+      description: "Check whether a collection and hadith number exist in the configured dataset.",
       inputSchema: referenceInputShape,
       outputSchema: validateReferenceOutputShape
     },
     async (args) => {
-      const structuredContent = validateHadithReference(args);
+      const structuredContent = tools.validateHadithReference(args);
       return { content: jsonText(structuredContent), structuredContent };
     }
   );
@@ -85,12 +95,12 @@ export function registerHadithTools(server: McpServer): void {
     "get_hadith_metadata",
     {
       title: "Get Hadith Metadata",
-      description: "Return non-text fixture metadata for a hadith record.",
+      description: "Return non-text metadata for a hadith record.",
       inputSchema: referenceInputShape,
       outputSchema: metadataOutputShape
     },
     async (args) => {
-      const structuredContent = getHadithMetadata(args);
+      const structuredContent = tools.getHadithMetadata(args);
       return { content: jsonText(structuredContent), structuredContent };
     }
   );
@@ -104,7 +114,7 @@ export function registerHadithTools(server: McpServer): void {
       outputSchema: gradeOutputShape
     },
     async (args) => {
-      const structuredContent = getHadithGrade(args);
+      const structuredContent = tools.getHadithGrade(args);
       return { content: jsonText(structuredContent), structuredContent };
     }
   );
