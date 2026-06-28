@@ -7,6 +7,9 @@ build/
 coverage/
 .turbo/
 .cache/
+.next/
+apps/docs/.next/
+apps/docs/out/
 
 # Local data artifacts
 *.sqlite

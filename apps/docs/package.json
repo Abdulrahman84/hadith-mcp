@@ -5,6 +5,19 @@
   "type": "module",
   "description": "Developer documentation and MCP client examples for hadith-mcp.",
   "scripts": {
-    "build": "node -e \"console.log('docs are markdown-only for now')\""
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "tailwindcss": "^4.3.1"
   }
 }

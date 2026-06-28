@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Source ledger visual</title>
+  <desc id="desc">Layered manuscript pages connected to a structured MCP data graph.</desc>
+  <defs>
+    <linearGradient id="page" x1="180" y1="70" x2="780" y2="560" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff8e8"/>
+      <stop offset="1" stop-color="#e8d8ba"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="180" y1="96" x2="775" y2="532" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#143f39"/>
+      <stop offset="1" stop-color="#0a1c27"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="24" flood-color="#07151d" flood-opacity=".28"/>
+    </filter>
+  </defs>
+  <rect width="960" height="640" rx="48" fill="#0a1c27"/>
+  <path d="M92 116h246M92 164h170M92 212h214" stroke="#326d63" stroke-width="10" stroke-linecap="round" opacity=".45"/>
+  <circle cx="810" cy="128" r="64" fill="#d5a85f" opacity=".9"/>
+  <g filter="url(#shadow)">
+    <path d="M214 98h416c50 0 90 40 90 90v318H304c-50 0-90-40-90-90V98Z" fill="url(#page)"/>
+    <path d="M304 98h416c50 0 90 40 90 90v318H394c-50 0-90-40-90-90V98Z" fill="#f8efd8"/>
+    <path d="M304 98v318c0 50 40 90 90 90h416" fill="none" stroke="#b07845" stroke-width="12" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(370 160)">
+    <rect width="330" height="260" rx="24" fill="url(#panel)"/>
+    <path d="M36 52h166M36 88h116M36 124h198" stroke="#eac984" stroke-width="10" stroke-linecap="round"/>
+    <path d="M56 178h60M152 178h60M248 178h42M86 178v46M182 178v46M268 178v46" stroke="#6fb8a6" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="86" cy="236" r="16" fill="#d5a85f"/>
+    <circle cx="182" cy="236" r="16" fill="#d5a85f"/>
+    <circle cx="268" cy="236" r="16" fill="#d5a85f"/>
+  </g>
+  <g opacity=".78">
+    <path d="M108 492h190M108 534h132M108 576h224" stroke="#d5a85f" stroke-width="9" stroke-linecap="round"/>
+    <path d="M748 446h106M704 492h150M760 538h94" stroke="#6fb8a6" stroke-width="9" stroke-linecap="round"/>
+  </g>
+</svg>

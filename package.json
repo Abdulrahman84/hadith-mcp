@@ -11,6 +11,8 @@
     "audit:meeatif-hadith-datasets": "npm run audit:meeatif-hadith-datasets -w @hadith-mcp/data",
     "build:meeatif-sqlite": "npm run build:meeatif-sqlite -w @hadith-mcp/data",
     "build:fixture-sqlite": "npm run build:fixture-sqlite -w @hadith-mcp/data",
+    "docs:dev": "npm run dev -w @hadith-mcp/docs",
+    "docs:build": "npm run build -w @hadith-mcp/docs",
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present"
