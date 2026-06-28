@@ -37,6 +37,8 @@ npm run typecheck
 npm test
 npm run build
 npm run audit:hadith-api
+npm run audit:meeatif-hadith-datasets
+npm run audit:maktaba-grades-backup
 npm run audit:open-hadith-data
 npm run build:fixture-sqlite
 node packages/hadith-mcp/dist/cli.js

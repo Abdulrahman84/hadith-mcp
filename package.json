@@ -9,6 +9,8 @@
   ],
   "scripts": {
     "audit:hadith-api": "npm run audit:hadith-api -w @hadith-mcp/data",
+    "audit:maktaba-grades-backup": "npm run audit:maktaba-grades-backup -w @hadith-mcp/data",
+    "audit:meeatif-hadith-datasets": "npm run audit:meeatif-hadith-datasets -w @hadith-mcp/data",
     "audit:open-hadith-data": "npm run audit:open-hadith-data -w @hadith-mcp/data",
     "build:fixture-sqlite": "npm run build:fixture-sqlite -w @hadith-mcp/data",
     "build": "npm run build --workspaces --if-present",

@@ -1,0 +1,225 @@
+{
+  "generated_at": "2026-06-28T11:59:44.564Z",
+  "repository": "https://huggingface.co/datasets/meeAtif/hadith_datasets",
+  "ref": "main",
+  "commit": "cd62605e4fef3c46968a5f9fdcccbbbffdf631b5",
+  "license": {
+    "metadata_license": "MIT",
+    "note": "Hugging Face metadata declares MIT, but v1 bundling requires source-chain clearance for hadith text, translations, and grades."
+  },
+  "books": [
+    {
+      "book": "bukhari",
+      "display_name": "Sahih al-Bukhari",
+      "file": "Sahih al-Bukhari.json",
+      "row_count": 7277,
+      "missing_arabic_count": 0,
+      "missing_english_count": 0,
+      "missing_grade_count": 7277,
+      "missing_reference_count": 0,
+      "sunnah_reference_count": 7277,
+      "grade_sources": [],
+      "grade_values": [],
+      "blockers": [],
+      "warnings": [
+        "7277 rows have no grade; MCP must return grade null for those records."
+      ]
+    },
+    {
+      "book": "muslim",
+      "display_name": "Sahih Muslim",
+      "file": "Sahih Muslim.json",
+      "row_count": 7368,
+      "missing_arabic_count": 0,
+      "missing_english_count": 1,
+      "missing_grade_count": 7368,
+      "missing_reference_count": 0,
+      "sunnah_reference_count": 7368,
+      "grade_sources": [],
+      "grade_values": [],
+      "blockers": [],
+      "warnings": [
+        "1 rows are missing English text.",
+        "7368 rows have no grade; MCP must return grade null for those records."
+      ]
+    },
+    {
+      "book": "abudawud",
+      "display_name": "Sunan Abi Dawud",
+      "file": "Sunan Abi Dawud.json",
+      "row_count": 5276,
+      "missing_arabic_count": 0,
+      "missing_english_count": 0,
+      "missing_grade_count": 380,
+      "missing_reference_count": 0,
+      "sunnah_reference_count": 5276,
+      "grade_sources": [
+        "Al-Albani"
+      ],
+      "grade_values": [
+        "1: Da'if 2: Sahih",
+        "1: Hasan 2: Da'if",
+        "1: Hasan 2: Sahih 3: The authenticator did not find a chain",
+        "1: Sahih 2: 3: Sahih Mauquf 4: The chain is da'if",
+        "Da'if",
+        "Da'if Jiddan",
+        "Da'if Jiddan Maqtu'",
+        "Da'if Maqtu'",
+        "Da'if Maqtu' Munkar",
+        "Da'if Marfu'",
+        "Da'if Mauquf",
+        "Da'if Munkar",
+        "Da'if Munkar, and the Sahih version is 19 days as in a previous hadith.",
+        "Da'if in chain",
+        "Da'if mursal",
+        "Hasan",
+        "Hasan Maqtu'",
+        "Hasan Mauquf",
+        "Hasan Sahih",
+        "Hasan in chain",
+        "Hasan li ghairih",
+        "Maqtu'",
+        "Mauquf",
+        "Mawdu' (Fabricated)",
+        "Munkar",
+        "Sahih",
+        "Sahih Maqtu'",
+        "Sahih Marfu'",
+        "Sahih Mauquf",
+        "Sahih Mauquf Marfu'",
+        "Sahih Mauquf and Marfu'",
+        "Sahih Mutawatir",
+        "Sahih except for \"one vessel ...\"",
+        "Sahih in chain",
+        "Sahih li ghairih",
+        "Shadh",
+        "Shadh 'anha",
+        "Shadh Maqtu'"
+      ],
+      "blockers": [],
+      "warnings": [
+        "380 rows have no grade; MCP must return grade null for those records."
+      ]
+    },
+    {
+      "book": "tirmidhi",
+      "display_name": "Jami at-Tirmidhi",
+      "file": "Jami` at-Tirmidhi.json",
+      "row_count": 4053,
+      "missing_arabic_count": 0,
+      "missing_english_count": 0,
+      "missing_grade_count": 148,
+      "missing_reference_count": 0,
+      "sunnah_reference_count": 4053,
+      "grade_sources": [
+        "Al-Albani",
+        "Darussalam"
+      ],
+      "grade_values": [
+        "1819",
+        "Abu Eisa (at-Tirmidhi) said: This Hadith is Hasan Sahih.",
+        "Da'if",
+        "Da'if,",
+        "Daif",
+        "Da’if",
+        "Hasan",
+        "Hasan,",
+        "Maudu'",
+        "Mawdu'",
+        "Sah, Sahih",
+        "Sahih",
+        "Sahih,",
+        "Sahih. [Abu 'Eisa said:] This Hadith is Hasan Sahih."
+      ],
+      "blockers": [],
+      "warnings": [
+        "148 rows have no grade; MCP must return grade null for those records."
+      ]
+    },
+    {
+      "book": "nasai",
+      "display_name": "Sunan an-Nasa'i",
+      "file": "Sunan an-Nasa'i.json",
+      "row_count": 5685,
+      "missing_arabic_count": 0,
+      "missing_english_count": 0,
+      "missing_grade_count": 363,
+      "missing_reference_count": 0,
+      "sunnah_reference_count": 5685,
+      "grade_sources": [
+        "Darussalam"
+      ],
+      "grade_values": [
+        "Da if",
+        "Da'if",
+        "Hasan",
+        "Sahih",
+        "Sahih, Sahih"
+      ],
+      "blockers": [],
+      "warnings": [
+        "363 rows have no grade; MCP must return grade null for those records."
+      ]
+    },
+    {
+      "book": "ibnmajah",
+      "display_name": "Sunan Ibn Majah",
+      "file": "Sunan Ibn Majah.json",
+      "row_count": 4079,
+      "missing_arabic_count": 0,
+      "missing_english_count": 0,
+      "missing_grade_count": 146,
+      "missing_reference_count": 0,
+      "sunnah_reference_count": 4079,
+      "grade_sources": [
+        "Al-Albani",
+        "Darussalam"
+      ],
+      "grade_values": [
+        "Da'if",
+        "Da'if,",
+        "Da,if",
+        "Da`if (Weak)",
+        "Da’if",
+        "Hasan",
+        "Maudu (fabricated)",
+        "Maudu’",
+        "Sahih",
+        "Sahih, Sahih"
+      ],
+      "blockers": [],
+      "warnings": [
+        "146 rows have no grade; MCP must return grade null for those records."
+      ]
+    }
+  ],
+  "summary": {
+    "books_expected": 6,
+    "books_found": 6,
+    "total_rows": 33738,
+    "total_missing_arabic": 0,
+    "total_missing_english": 1,
+    "total_missing_grades": 15682,
+    "total_sunnah_references": 33738,
+    "grade_sources": [
+      "Al-Albani",
+      "Darussalam"
+    ],
+    "total_release_blockers": 2,
+    "total_warnings": 7,
+    "can_bundle_v1_data": false
+  },
+  "release_blockers": [
+    "Source chain needs human review: README describes direct sunnah.com links, and text/translation redistribution rights are not established by the Hugging Face MIT metadata alone.",
+    "Grade source rights need human review: grades include named sources such as Darussalam or Al-Albani, but redistribution terms for those grade attributions are not documented in the dataset."
+  ],
+  "warnings": [
+    "bukhari: 7277 rows have no grade; MCP must return grade null for those records.",
+    "muslim: 1 rows are missing English text.",
+    "muslim: 7368 rows have no grade; MCP must return grade null for those records.",
+    "abudawud: 380 rows have no grade; MCP must return grade null for those records.",
+    "tirmidhi: 148 rows have no grade; MCP must return grade null for those records.",
+    "nasai: 363 rows have no grade; MCP must return grade null for those records.",
+    "ibnmajah: 146 rows have no grade; MCP must return grade null for those records."
+  ]
+}

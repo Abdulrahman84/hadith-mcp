@@ -21,6 +21,10 @@ Until those blockers are resolved, v1 may keep the importer tooling and fixture-
 
 Current Open-Hadith-Data blocker: source-chain review. Its README says the original CSV files came from `ceefour/hadith-islamware`, and that upstream README says the data came from Islam Ware and lists Islam Ware copyright. Do not publish a bundled SQLite artifact from Open-Hadith-Data until that source chain is cleared or explicitly accepted under the documented data license posture.
 
+`meeAtif/hadith_datasets` is a strong all-in-one candidate for Arabic, English, and grades. `npm run audit:meeatif-hadith-datasets` found Six Books coverage, no missing Arabic rows, one missing English row, and grade sources including Al-Albani and Darussalam. It remains blocked because every inspected row references Sunnah.com and the dataset license metadata does not by itself establish redistribution rights for the hadith text, translations, or grade attributions.
+
+`fawazahmed0/maktaba-grades-backup` is a grade-source candidate, not a cleared bundled source. `npm run audit:maktaba-grades-backup` found 11 grade source books covering Abu Dawud, Tirmidhi, Nasa'i, and Ibn Majah with named graders. It remains blocked because no repository license was found, grade extraction/mapping is not implemented, and it does not cover Bukhari or Muslim grades.
+
 Sunnah.com and Dorar are important references, but they should not be bundled in v1 unless their terms explicitly allow the intended usage.
 
 Sunnah.com is not a v1 bundled data dependency because its developer page says API access requires an API key, currently covers only a portion of its data, and offline dumps are not available yet.

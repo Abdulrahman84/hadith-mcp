@@ -155,6 +155,8 @@ Status: audit tooling is implemented for `fawazahmed0/hadith-api`. The first gen
 
 Status: audit tooling is also implemented for `Open-Hadith-Data`. The generated report shows complete Six Books Arabic coverage with no empty Arabic rows. It remains blocked only by source-chain review; Arabic-only text and missing grades are documented limitations rather than blockers.
 
+Status: audit tooling is implemented for `meeAtif/hadith_datasets` and `fawazahmed0/maktaba-grades-backup`. `meeAtif/hadith_datasets` is promising for Arabic, English, and grades, but blocked by Sunnah.com/text/translation/grade redistribution review. `maktaba-grades-backup` is promising for source-attributed grades in four Sunan collections, but blocked by missing license, missing parser/mapping work, and no Bukhari/Muslim grade coverage.
+
 ### 3. Importer and SQLite Builder
 
 Tasks:
