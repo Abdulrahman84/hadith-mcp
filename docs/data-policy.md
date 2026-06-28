@@ -13,6 +13,10 @@
 
 The initial candidate source is `fawazahmed0/hadith-api` because it is publicly available, permissively licensed, and includes hadith JSON data in multiple languages and grades. Before release, the importer must produce a data report that confirms coverage, provenance, missing fields, duplicate references, and grade attribution.
 
+Current audit status: `npm run audit:hadith-api` inspects the Six Books Arabic and English editions and writes reports to `data/generated/hadith-api-audit.json` and `data/generated/hadith-api-audit.md`. The first audit found Six Books Arabic and English coverage, but `can_bundle_v1_data` is `false` because edition-level source fields are blank, record-level provenance is not available from the inspected metadata, and some Arabic records have missing text.
+
+Until those blockers are resolved, v1 may keep the importer tooling and fixture-backed MCP scaffold, but it must not publish a bundled SQLite artifact from this source as authoritative hadith data.
+
 Sunnah.com and Dorar are important references, but they should not be bundled in v1 unless their terms explicitly allow the intended usage.
 
 Sunnah.com is not a v1 bundled data dependency because its developer page says API access requires an API key, currently covers only a portion of its data, and offline dumps are not available yet.

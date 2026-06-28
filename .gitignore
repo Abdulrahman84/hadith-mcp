@@ -14,8 +14,11 @@ coverage/
 *.db
 *.db-shm
 *.db-wal
-data/generated/*
-!data/generated/README.md
+data/generated/*.sqlite
+data/generated/*.sqlite3
+data/generated/*.db
+data/generated/*.db-shm
+data/generated/*.db-wal
 
 # Environment
 .env

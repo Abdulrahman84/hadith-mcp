@@ -36,10 +36,13 @@ npm install
 npm run typecheck
 npm test
 npm run build
+npm run audit:hadith-api
 node packages/hadith-mcp/dist/cli.js
 ```
 
 The current MCP server is fixture-backed. The fixture records are synthetic placeholders for testing schemas and client integration; they are not real hadith text and must not be used for religious claims.
+
+The audit command writes candidate-source reports to `data/generated/` and currently blocks bundling `hadith-api` data until provenance and missing-text issues are resolved.
 
 ## Future Product Direction
 

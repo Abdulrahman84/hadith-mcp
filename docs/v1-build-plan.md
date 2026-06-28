@@ -151,6 +151,8 @@ Acceptance criteria:
 - Every grade is classified as attributed, unattributed, or rejected.
 - Any unresolved text-license issue is visible as a release blocker.
 
+Status: audit tooling is implemented for `fawazahmed0/hadith-api`. The first generated report confirms Six Books Arabic and English coverage, but marks bundled v1 data as blocked due to missing edition-level source fields, missing record-level provenance, and missing Arabic text in some records.
+
 ### 3. Importer and SQLite Builder
 
 Tasks:
