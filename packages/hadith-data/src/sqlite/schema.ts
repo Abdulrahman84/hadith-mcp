@@ -50,6 +50,7 @@ CREATE TABLE hadith_texts (
   hadith_id INTEGER NOT NULL REFERENCES hadiths(id),
   language TEXT NOT NULL CHECK (language IN ('arabic', 'english')),
   text TEXT NOT NULL,
+  search_text TEXT NOT NULL,
   source_dataset_id INTEGER NOT NULL REFERENCES source_datasets(id),
   import_hash TEXT NOT NULL,
   UNIQUE (hadith_id, language)

@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { validateNormalizedRows, type ImportWarning, type NormalizedHadithRow } from "../index.js";
+import { searchTextForIndex } from "../text/arabic-search.js";
 import { sqliteSchemaSql } from "./schema.js";
 
 export type NormalizedHadithSqliteRow = NormalizedHadithRow & {
@@ -165,9 +166,9 @@ function insertTexts(rows: NormalizedHadithSqliteRow[]): string {
 
       return textRows.map((textRow) =>
         [
-          "INSERT INTO hadith_texts (hadith_id, language, text, source_dataset_id, import_hash)",
+          "INSERT INTO hadith_texts (hadith_id, language, text, search_text, source_dataset_id, import_hash)",
           "SELECT hadiths.id,",
-          `${sqlString(textRow.language)}, ${sqlString(textRow.text)}, source_datasets.id, ${sqlString(contentHash(textRow.text))}`,
+          `${sqlString(textRow.language)}, ${sqlString(textRow.text)}, ${sqlString(searchTextForIndex(textRow.text, textRow.language))}, source_datasets.id, ${sqlString(contentHash(textRow.text))}`,
           "FROM hadiths",
           "JOIN collections ON collections.id = hadiths.collection_id",
           "JOIN source_datasets ON source_datasets.name =",
@@ -205,7 +206,7 @@ function insertGrades(rows: NormalizedHadithSqliteRow[]): string {
 function insertFtsRows(): string {
   return `
 INSERT INTO hadith_texts_fts (hadith_text_id, collection, hadith_number, language, text)
-SELECT hadith_texts.id, collections.collection, hadiths.hadith_number, hadith_texts.language, hadith_texts.text
+SELECT hadith_texts.id, collections.collection, hadiths.hadith_number, hadith_texts.language, hadith_texts.search_text
 FROM hadith_texts
 JOIN hadiths ON hadiths.id = hadith_texts.hadith_id
 JOIN collections ON collections.id = hadiths.collection_id;

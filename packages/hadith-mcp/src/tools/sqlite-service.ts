@@ -5,6 +5,7 @@ import {
   sunnahSlugForCollection
 } from "../collections.js";
 import { SqliteJsonClient, sqlString } from "../db/sqlite.js";
+import { searchTermsForQuery } from "../text/arabic-search.js";
 import type { CollectionSummary, Grade, HadithRecord, Language, SearchResult, ToolError } from "../types.js";
 import type { HadithService } from "./service.js";
 
@@ -148,7 +149,11 @@ function ftsQuery(query: string): string {
     .trim()
     .split(/\s+/)
     .filter((term) => term.length > 0)
-    .map((term) => `"${term.replaceAll('"', '""')}"`)
+    .map((term) => {
+      const variants = searchTermsForQuery(term).map((variant) => `"${variant.replaceAll('"', '""')}"`);
+      return variants.length <= 1 ? variants[0] : `(${variants.join(" OR ")})`;
+    })
+    .filter((term): term is string => term !== undefined)
     .join(" AND ");
 }
 
@@ -380,7 +385,10 @@ SELECT
   source_datasets.version AS source_dataset_version,
   source_datasets.license_note AS source_license_note,
   hadiths.source_url_or_reference,
-  snippet(hadith_texts_fts, 4, '[', ']', '...', 16) AS snippet
+  CASE
+    WHEN hadith_texts.language = 'arabic' THEN substr(hadith_texts.text, 1, 300)
+    ELSE snippet(hadith_texts_fts, 4, '[', ']', '...', 16)
+  END AS snippet
 FROM hadith_texts_fts
 JOIN hadith_texts ON hadith_texts.id = hadith_texts_fts.hadith_text_id
 JOIN hadiths ON hadiths.id = hadith_texts.hadith_id

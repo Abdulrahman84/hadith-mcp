@@ -59,6 +59,12 @@ describe("buildSqliteFromRows", () => {
       );
       expect(ftsMatches).toEqual([{ collection: "tirmidhi", hadith_number: "1", language: "english" }]);
 
+      const arabicMatches = sqliteJson<{ collection: string; hadith_number: string; language: string }>(
+        dbPath,
+        "SELECT collection, hadith_number, language FROM hadith_texts_fts WHERE hadith_texts_fts MATCH 'للترمذي' ORDER BY language;"
+      );
+      expect(arabicMatches).toEqual([{ collection: "tirmidhi", hadith_number: "1", language: "arabic" }]);
+
       const grades = sqliteJson<{ grade_value: string; grader: string }>(
         dbPath,
         "SELECT grade_value, grader FROM hadith_grades;"
