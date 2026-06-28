@@ -6,6 +6,7 @@ type SiteContent = {
   alternate: string;
   nav: {
     overview: string;
+    issue: string;
     tools: string;
     data: string;
     setup: string;
@@ -20,6 +21,12 @@ type SiteContent = {
     note: string;
   };
   metrics: [string, string][];
+  issue: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    items: [string, string][];
+  };
   toolsIntro: {
     eyebrow: string;
     title: string;
@@ -55,6 +62,7 @@ export const content: Record<Locale, SiteContent> = {
     alternate: "العربية",
     nav: {
       overview: "Overview",
+      issue: "Issue",
       tools: "Tools",
       data: "Data",
       setup: "Setup",
@@ -73,11 +81,23 @@ export const content: Record<Locale, SiteContent> = {
       ["33,736", "imported rows"],
       ["Six Books", "initial scope"],
       ["18,054", "attributed grades"],
-      ["0", "SQLite validation warnings"]
+      ["Local", "SQLite build"]
     ],
+    issue: {
+      eyebrow: "The issue",
+      title: "AI agents need hadith text they can verify.",
+      body:
+        "General chat models can sound confident while mixing references, grades, translations, and missing provenance. Hadith MCP gives builders a narrow retrieval layer that returns source records before any answer is written.",
+      items: [
+        ["The source gets blurred", "Agents often receive a quote without the exact collection, hadith number, dataset, or source reference."],
+        ["MCP answer: citations", "Every lookup returns structured citations and provenance fields alongside the text."],
+        ["Grades get guessed", "When a grade is missing, the system must say so instead of filling the gap."],
+        ["MCP answer: grades", "Grades are returned only when the imported source attributes them; otherwise the value is grade: null."]
+      ]
+    },
     toolsIntro: {
       eyebrow: "Tool surface",
-      title: "Six read-only calls for AI clients.",
+      title: "Six read-only calls for AI Agents.",
       body:
         "The server returns structured source records and provenance notes. It does not issue rulings, infer grades, or generate religious interpretation."
     },
@@ -96,8 +116,8 @@ export const content: Record<Locale, SiteContent> = {
         "The local candidate build uses meeAtif/hadith_datasets. The generated database and its import report stay separate from the MIT code license.",
       rows: [
         ["Coverage", "Six Books", "Bukhari, Muslim, Abu Dawud, Tirmidhi, Nasa'i, and Ibn Majah."],
-        ["Warnings", "15,685", "Mostly missing grades, one missing English row, and two skipped references."],
-        ["Grade sources", "Darussalam / Al-Albani", "Returned only where the imported source attributes them."]
+        ["Provenance", "Explicit fields", "Collection, hadith number, dataset name, source URL, and import notes stay attached."],
+        ["Licensing", "Separated", "Generated data and import reports are not covered by the MIT code license."]
       ]
     },
     setup: {
@@ -128,6 +148,7 @@ export const content: Record<Locale, SiteContent> = {
     alternate: "English",
     nav: {
       overview: "الرئيسية",
+      issue: "المشكلة",
       tools: "الأدوات",
       data: "البيانات",
       setup: "التشغيل",
@@ -146,11 +167,23 @@ export const content: Record<Locale, SiteContent> = {
       ["33,736", "صفوف مستوردة"],
       ["الكتب الستة", "نطاق البيانات"],
       ["18,054", "درجة منسوبة"],
-      ["0", "تحذيرات تحقق (SQLite)"]
+      ["محلي", "بناء (SQLite)"]
     ],
+    issue: {
+      eyebrow: "المشكلة",
+      title: "عملاء الذكاء الاصطناعي يحتاجون نصا حديثيا يمكن التحقق منه.",
+      body:
+        "النماذج العامة قد تبدو واثقة، لكنها تخلط أحيانا بين المرجع والدرجة والترجمة ونقص التوثيق. لذلك يقدّم Hadith MCP طبقة استرجاع (retrieval layer) ضيقة تعيد سجل المصدر قبل صياغة أي جواب.",
+      items: [
+        ["المصدر قد يختلط", "قد يصل للعميل نص بلا اسم الكتاب، أو رقم الحديث، أو اسم مجموعة البيانات (dataset)، أو مرجع المصدر."],
+        ["حل (MCP): الإحالات", "كل عملية استرجاع تعيد النص مع الإحالات وحقول التوثيق (provenance) في بنية واضحة."],
+        ["الدرجات قد تُخمن", "عند غياب الدرجة يجب أن يظهر النقص صراحة، لا أن يملأه النموذج (model)."],
+        ["حل (MCP): الدرجات", "لا يعرض الخادم الدرجة إلا إذا نسبها المصدر المستورد، وإلا يعيد (grade: null)."]
+      ]
+    },
     toolsIntro: {
       eyebrow: "واجهة الأدوات",
-      title: "ست أدوات قراءة فقط لعملاء الذكاء الاصطناعي (AI clients).",
+      title: "ست أدوات قراءة فقط لعملاء الذكاء الاصطناعي (AI Agents).",
       body:
         "يعيد الخادم سجلات منظمة من المصدر مع ملاحظات التوثيق. لا يصدر أحكاما، ولا يستنتج الدرجات، ولا يولد تفسيرا دينيا."
     },
@@ -169,8 +202,8 @@ export const content: Record<Locale, SiteContent> = {
         "يعتمد التشغيل المحلي على مجموعة بيانات (dataset) باسم meeAtif/hadith_datasets. ملف قاعدة البيانات (SQLite) وتقرير الاستيراد منفصلان عن رخصة الكود (MIT).",
       rows: [
         ["التغطية", "الكتب الستة", "البخاري، مسلم، أبو داود، الترمذي، النسائي، وابن ماجه."],
-        ["التحذيرات", "15,685", "معظمها درجات غير موجودة، مع صف واحد بلا ترجمة إنجليزية ومرجعين لم ينجح استيرادهما."],
-        ["مصادر الدرجات", "Darussalam / Al-Albani", "تعرض الدرجة فقط عندما تكون منسوبة في المصدر المستورد."]
+        ["التوثيق", "حقول واضحة", "اسم الكتاب، ورقم الحديث، واسم مجموعة البيانات (dataset)، ورابط المصدر، وملاحظات الاستيراد تبقى مرفقة."],
+        ["الترخيص", "فصل واضح", "البيانات المولدة وتقارير الاستيراد ليست ضمن رخصة كود (MIT)."]
       ]
     },
     setup: {
