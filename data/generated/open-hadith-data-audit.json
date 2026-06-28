@@ -1,0 +1,242 @@
+{
+  "generated_at": "2026-06-28T11:47:40.520Z",
+  "repository": "https://github.com/mhashim6/Open-Hadith-Data",
+  "ref": "master",
+  "commit": "1515f6cba21efed20d8916bf55acef1dffa0d2d5",
+  "license": {
+    "repository_license": "ODbL 1.0 with Database Contents License 1.0",
+    "license_url": "https://github.com/mhashim6/Open-Hadith-Data/blob/master/LICENSE",
+    "contents_license": "Database Contents License 1.0",
+    "note": "License is explicit, but the source chain still needs review before bundled redistribution."
+  },
+  "upstream_source": {
+    "repository": "https://github.com/ceefour/hadith-islamware",
+    "commit": "d2cb0588e5b7320c6c2861f05888f106aaeb9564",
+    "license_url": "https://github.com/ceefour/hadith-islamware/blob/master/LICENSE",
+    "readme_note": "hadith-islamware README says the database came from Islam Ware and lists Copyright (C) 2006-2014 Islam Ware."
+  },
+  "books": [
+    {
+      "book": "bukhari",
+      "display_name": "Sahih al-Bukhari",
+      "folder": "Sahih_Al-Bukhari",
+      "plain": {
+        "path": "Sahih_Al-Bukhari/sahih_al-bukhari_ahadith.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sahih_Al-Bukhari/sahih_al-bukhari_ahadith.utf8.csv",
+        "size_bytes": 4613832,
+        "sha": "e78f8ea42c4bdf58027a2b634b0d19393f4a3232645ed79887959a2978685317",
+        "row_count": 7008,
+        "min_columns": 2,
+        "max_columns": 2,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": false
+      },
+      "diacritized": {
+        "path": "Sahih_Al-Bukhari/sahih_al-bukhari_ahadith_mushakkala_mufassala.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sahih_Al-Bukhari/sahih_al-bukhari_ahadith_mushakkala_mufassala.utf8.csv",
+        "size_bytes": 47158870,
+        "sha": "b03f661876fc4089520800b9231b57a1564baff734344ea8914494b86e2eb708",
+        "row_count": 7008,
+        "min_columns": 3,
+        "max_columns": 3,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": true
+      },
+      "count_match": true,
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "book": "muslim",
+      "display_name": "Sahih Muslim",
+      "folder": "Sahih_Muslim",
+      "plain": {
+        "path": "Sahih_Muslim/sahih_muslim_ahadith.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sahih_Muslim/sahih_muslim_ahadith.utf8.csv",
+        "size_bytes": 4234470,
+        "sha": "dfa4ba5de748f21384c30d6d36fd315de0bdb778158aa475aef17f1f88f7eb31",
+        "row_count": 5362,
+        "min_columns": 2,
+        "max_columns": 2,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": false
+      },
+      "diacritized": {
+        "path": "Sahih_Muslim/sahih_muslim_ahadith_mushakkala_mufassala.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sahih_Muslim/sahih_muslim_ahadith_mushakkala_mufassala.utf8.csv",
+        "size_bytes": 18741232,
+        "sha": "79232c8d7c27fef161d8f33ca169f9754741cfe14957dde2ac76893374998943",
+        "row_count": 5362,
+        "min_columns": 3,
+        "max_columns": 3,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": true
+      },
+      "count_match": true,
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "book": "abudawud",
+      "display_name": "Sunan Abi Dawud",
+      "folder": "Sunan_Abu-Dawud",
+      "plain": {
+        "path": "Sunan_Abu-Dawud/sunan_abu-dawud_ahadith.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sunan_Abu-Dawud/sunan_abu-dawud_ahadith.utf8.csv",
+        "size_bytes": 2935209,
+        "sha": "60ab2b9684161c54cbf4137aa4ac3af20dc16d2858856e55371be98534f274ff",
+        "row_count": 4590,
+        "min_columns": 2,
+        "max_columns": 2,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": false
+      },
+      "diacritized": {
+        "path": "Sunan_Abu-Dawud/sunan_abu-dawud_ahadith_mushakkala_mufassala.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sunan_Abu-Dawud/sunan_abu-dawud_ahadith_mushakkala_mufassala.utf8.csv",
+        "size_bytes": 23674773,
+        "sha": "68918ef593d5154d38c1d00bad3ae8237510cb35eeb3ebf22b4a1f9fa3b2799f",
+        "row_count": 4590,
+        "min_columns": 3,
+        "max_columns": 3,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": true
+      },
+      "count_match": true,
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "book": "tirmidhi",
+      "display_name": "Jami at-Tirmidhi",
+      "folder": "Sunan_Al-Tirmidhi",
+      "plain": {
+        "path": "Sunan_Al-Tirmidhi/sunan_al-tirmidhi_ahadith.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sunan_Al-Tirmidhi/sunan_al-tirmidhi_ahadith.utf8.csv",
+        "size_bytes": 3209201,
+        "sha": "2a7a0d041bc859fd113ace013d5693b70de61e484c262c331772c1376836f357",
+        "row_count": 3891,
+        "min_columns": 2,
+        "max_columns": 2,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": false
+      },
+      "diacritized": {
+        "path": "Sunan_Al-Tirmidhi/sunan_al-tirmidhi_ahadith_mushakkala_mufassala.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sunan_Al-Tirmidhi/sunan_al-tirmidhi_ahadith_mushakkala_mufassala.utf8.csv",
+        "size_bytes": 28500904,
+        "sha": "136b4467116a59dd81b9633306960898d6f8fd34c3a3aa3579d2d0ba130b3ce9",
+        "row_count": 3891,
+        "min_columns": 3,
+        "max_columns": 3,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": true
+      },
+      "count_match": true,
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "book": "nasai",
+      "display_name": "Sunan an-Nasa'i",
+      "folder": "Sunan_Al-Nasai",
+      "plain": {
+        "path": "Sunan_Al-Nasai/sunan_al-nasai_ahadith.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sunan_Al-Nasai/sunan_al-nasai_ahadith.utf8.csv",
+        "size_bytes": 3005937,
+        "sha": "b04f7fbebf59c46a706c96fa1c62a611a19bdb6c25f74a99d271da98ebe79828",
+        "row_count": 5662,
+        "min_columns": 2,
+        "max_columns": 2,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": false
+      },
+      "diacritized": {
+        "path": "Sunan_Al-Nasai/sunan_al-nasai_ahadith_mushakkala_mufassala.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sunan_Al-Nasai/sunan_al-nasai_ahadith_mushakkala_mufassala.utf8.csv",
+        "size_bytes": 9064720,
+        "sha": "21d677b02a39722f039f9a79f06706e71a0a09a18cc1aa71df6f90d994bf11c2",
+        "row_count": 5662,
+        "min_columns": 3,
+        "max_columns": 3,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": true
+      },
+      "count_match": true,
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "book": "ibnmaja",
+      "display_name": "Sunan Ibn Majah",
+      "folder": "Sunan_Ibn-Maja",
+      "plain": {
+        "path": "Sunan_Ibn-Maja/sunan_ibn-maja_ahadith.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sunan_Ibn-Maja/sunan_ibn-maja_ahadith.utf8.csv",
+        "size_bytes": 2149011,
+        "sha": "d64184e8a33f43127d046727fe97c8036e82fd4ba342af0953e36a552e432ded",
+        "row_count": 4332,
+        "min_columns": 2,
+        "max_columns": 2,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": false
+      },
+      "diacritized": {
+        "path": "Sunan_Ibn-Maja/sunan_ibn-maja_ahadith_mushakkala_mufassala.utf8.csv",
+        "url": "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/master/Sunan_Ibn-Maja/sunan_ibn-maja_ahadith_mushakkala_mufassala.utf8.csv",
+        "size_bytes": 7990237,
+        "sha": "88b2fec03dbaff0b6d8e36d9b4b3989d1526a0aa8f81a8cdd56e1de95a7d5f68",
+        "row_count": 4332,
+        "min_columns": 3,
+        "max_columns": 3,
+        "missing_number_count": 0,
+        "missing_arabic_text_count": 0,
+        "duplicate_numbers": [],
+        "has_elaboration_column": true
+      },
+      "count_match": true,
+      "blockers": [],
+      "warnings": []
+    }
+  ],
+  "summary": {
+    "books_expected": 6,
+    "books_found": 6,
+    "total_plain_rows": 30845,
+    "total_diacritized_rows": 30845,
+    "total_release_blockers": 1,
+    "total_warnings": 2,
+    "has_english": false,
+    "has_grades": false,
+    "can_bundle_v1_data": false
+  },
+  "release_blockers": [
+    "Source chain needs human review: Open-Hadith-Data says original CSV files came from hadith-islamware; hadith-islamware says data came from Islam Ware and lists Islam Ware copyright."
+  ],
+  "warnings": [
+    "Dataset is Arabic-only; English text would need a separate audited source.",
+    "Dataset does not include source-attributed hadith grades; MCP grade responses must return grade null for this source."
+  ]
+}

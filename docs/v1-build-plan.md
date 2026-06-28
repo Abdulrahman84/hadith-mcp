@@ -153,6 +153,8 @@ Acceptance criteria:
 
 Status: audit tooling is implemented for `fawazahmed0/hadith-api`. The first generated report confirms Six Books Arabic and English coverage, but marks bundled v1 data as blocked due to missing edition-level source fields, missing record-level provenance, and missing Arabic text in some records.
 
+Status: audit tooling is also implemented for `Open-Hadith-Data`. The generated report shows complete Six Books Arabic coverage with no empty Arabic rows. It remains blocked only by source-chain review; Arabic-only text and missing grades are documented limitations rather than blockers.
+
 ### 3. Importer and SQLite Builder
 
 Tasks:

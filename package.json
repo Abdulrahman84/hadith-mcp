@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "audit:hadith-api": "npm run audit:hadith-api -w @hadith-mcp/data",
+    "audit:open-hadith-data": "npm run audit:open-hadith-data -w @hadith-mcp/data",
     "build:fixture-sqlite": "npm run build:fixture-sqlite -w @hadith-mcp/data",
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",

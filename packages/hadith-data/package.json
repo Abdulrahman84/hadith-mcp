@@ -10,6 +10,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "audit:hadith-api": "npm run build && node dist/audit-hadith-api.js --out-dir ../../data/generated",
+    "audit:open-hadith-data": "npm run build && node dist/audit-open-hadith-data.js --out-dir ../../data/generated",
     "build:fixture-sqlite": "npm run build && node dist/build-fixture-sqlite.js",
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
@@ -20,5 +21,8 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "csv-parse": "^7.0.0"
   }
 }
