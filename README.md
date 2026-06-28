@@ -25,9 +25,13 @@ The project goal is to give AI assistants and developer tools a strict source la
 
 See [docs/mcp-tools.md](docs/mcp-tools.md) for the planned interface.
 
+See [docs/v1-build-plan.md](docs/v1-build-plan.md) for the implementation plan, release gates, and first sprint.
+
+See [docs/future-product-plan.md](docs/future-product-plan.md) for how this MCP should support a later Quran/Hadith AI product in a separate repository.
+
 ## Future Product Direction
 
-The Hadith MCP is intended to become one half of a broader Islamic source retrieval product:
+The Hadith MCP is intended to become one source layer for a broader Islamic source retrieval product that should live in a separate repository:
 
 - Tafsir MCP handles Quran and tafsir retrieval.
 - Hadith MCP handles Sunnah retrieval.
@@ -36,5 +40,4 @@ The Hadith MCP is intended to become one half of a broader Islamic source retrie
 
 ## Current Status
 
-This repository currently contains the project plan and source policy. Implementation has not started yet.
-
+This repository currently contains the project plan, source policy, and v1 build plan. Implementation has not started yet.

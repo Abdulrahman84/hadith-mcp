@@ -15,6 +15,10 @@ The initial candidate source is `fawazahmed0/hadith-api` because it is publicly 
 
 Sunnah.com and Dorar are important references, but they should not be bundled in v1 unless their terms explicitly allow the intended usage.
 
+Sunnah.com is not a v1 bundled data dependency because its developer page says API access requires an API key, currently covers only a portion of its data, and offline dumps are not available yet.
+
+Dorar is a future enrichment or live integration candidate. Its public page documents JSON/JSONP search access for displaying search results, but v1 must not redistribute or package Dorar content unless a terms review explicitly clears that use.
+
 ## Grading Policy
 
 Grades must be returned only when the imported source explicitly provides enough attribution to show where the grade came from. If attribution is missing, the MCP response must return `grade: null` and include a provenance note.
@@ -29,4 +33,3 @@ This project is a retrieval and citation layer. It must not:
 - Present generated interpretation as sourced knowledge.
 - Hide disagreement or missing provenance.
 - Return uncited hadith text.
-
