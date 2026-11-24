@@ -1,6 +1,11 @@
 export type EmbeddingProvider = {
   readonly name: string;
   readonly model: string;
+  /**
+   * Prepended to search queries only, never to indexed documents. Instruction-tuned models such as
+   * Qwen3-Embedding expect one, e.g. "Instruct: <task>\nQuery: ".
+   */
+  readonly queryPrefix?: string | undefined;
   embed(texts: string[]): Promise<Float32Array[]>;
 };
 
@@ -10,6 +15,7 @@ type HttpProviderOptions = {
   model?: string | undefined;
   timeoutMs?: number | undefined;
   fetchImpl?: FetchLike | undefined;
+  queryPrefix?: string | undefined;
 };
 
 const defaultTimeoutMs = 60_000;
@@ -98,6 +104,7 @@ export function createOllamaEmbeddingProvider(options: HttpProviderOptions & { b
   return {
     name: "ollama",
     model,
+    queryPrefix: options.queryPrefix,
     async embed(texts) {
       if (texts.length === 0) {
         return [];
@@ -116,23 +123,35 @@ export function createOllamaEmbeddingProvider(options: HttpProviderOptions & { b
 }
 
 export function createOpenAiCompatibleEmbeddingProvider(
-  options: HttpProviderOptions & { baseUrl: string; apiKey?: string | undefined }
+  options: HttpProviderOptions & {
+    baseUrl: string;
+    apiKey?: string | undefined;
+    /** Requested output size, for models trained to be truncated (Matryoshka), e.g. Qwen3-Embedding. */
+    dimensions?: number | undefined;
+    /** OpenRouter provider routing, sent as `provider: { order, allow_fallbacks: true }`. */
+    providerOrder?: string[] | undefined;
+  }
 ): EmbeddingProvider {
   const baseUrl = options.baseUrl.replace(/\/+$/, "");
   const model = options.model ?? "bge-m3";
   const fetchImpl = options.fetchImpl ?? fetch;
   const timeoutMs = options.timeoutMs ?? defaultTimeoutMs;
   const headers: Record<string, string> = options.apiKey ? { Authorization: `Bearer ${options.apiKey}` } : {};
+  const extraBody: Record<string, unknown> = {
+    ...(options.dimensions ? { dimensions: options.dimensions } : {}),
+    ...(options.providerOrder?.length ? { provider: { order: options.providerOrder, allow_fallbacks: true } } : {})
+  };
 
   return {
     name: "openai-compatible",
     model,
+    queryPrefix: options.queryPrefix,
     async embed(texts) {
       if (texts.length === 0) {
         return [];
       }
 
-      const payload = await postJson(fetchImpl, `${baseUrl}/embeddings`, { model, input: texts }, headers, timeoutMs);
+      const payload = await postJson(fetchImpl, `${baseUrl}/embeddings`, { model, input: texts, ...extraBody }, headers, timeoutMs);
       const data = (payload as { data?: unknown }).data;
 
       if (!Array.isArray(data)) {
@@ -200,6 +219,8 @@ export function createFakeEmbeddingProvider(options: { dims?: number; model?: st
 /**
  * EMBEDDINGS_PROVIDER: "ollama" (default), "openai" (any OpenAI-compatible /embeddings API), or "none".
  * When EMBEDDINGS_PROVIDER is unset and EMBEDDINGS_BASE_URL is set, the OpenAI-compatible provider is used.
+ * EMBEDDINGS_QUERY_PREFIX is prepended to queries only; a literal "\n" in it becomes a newline.
+ * EMBEDDINGS_DIMENSIONS and EMBEDDINGS_PROVIDER_ORDER (comma-separated) apply to the OpenAI-compatible provider.
  */
 export function createEmbeddingProviderFromEnv(
   env: NodeJS.ProcessEnv = process.env,
@@ -210,9 +231,16 @@ export function createEmbeddingProviderFromEnv(
   const kind = explicit || (baseUrl ? "openai" : "ollama");
   const model = env.EMBEDDINGS_MODEL?.trim() || undefined;
   const timeoutMs = Number.parseInt(env.EMBEDDINGS_TIMEOUT_MS ?? "", 10);
+  const queryPrefix = env.EMBEDDINGS_QUERY_PREFIX ? env.EMBEDDINGS_QUERY_PREFIX.replace(/\\n/g, "\n") : undefined;
+  const dimensions = Number.parseInt(env.EMBEDDINGS_DIMENSIONS ?? "", 10);
+  const providerOrder = (env.EMBEDDINGS_PROVIDER_ORDER ?? "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
   const common = {
     model,
     fetchImpl,
+    queryPrefix,
     timeoutMs: Number.isFinite(timeoutMs) && timeoutMs > 0 ? timeoutMs : undefined
   };
 
@@ -225,7 +253,13 @@ export function createEmbeddingProviderFromEnv(
       return null;
     }
 
-    return createOpenAiCompatibleEmbeddingProvider({ ...common, baseUrl, apiKey: env.EMBEDDINGS_API_KEY?.trim() });
+    return createOpenAiCompatibleEmbeddingProvider({
+      ...common,
+      baseUrl,
+      apiKey: env.EMBEDDINGS_API_KEY?.trim(),
+      dimensions: Number.isFinite(dimensions) && dimensions > 0 ? dimensions : undefined,
+      providerOrder
+    });
   }
 
   return createOllamaEmbeddingProvider({ ...common, baseUrl: env.OLLAMA_URL?.trim() || undefined });

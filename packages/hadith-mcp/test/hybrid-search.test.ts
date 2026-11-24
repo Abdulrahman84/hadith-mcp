@@ -347,6 +347,55 @@ describe("embedding providers", () => {
     await expect(ollama.embed(["a"])).rejects.toThrow(/HTTP 404: model not found/);
   });
 
+  it("sends dimensions and provider routing, and prefixes only search queries", async () => {
+    const bodies: Array<{ input: string[]; dimensions?: number; provider?: unknown }> = [];
+    const configured = createEmbeddingProviderFromEnv(
+      {
+        EMBEDDINGS_BASE_URL: "https://embeddings.test/v1",
+        EMBEDDINGS_MODEL: "qwen/qwen3-embedding-8b",
+        EMBEDDINGS_DIMENSIONS: "1024",
+        EMBEDDINGS_PROVIDER_ORDER: "DeepInfra, Nebius",
+        EMBEDDINGS_QUERY_PREFIX: "Instruct: find hadith\\nQuery: "
+      },
+      async (_url, init) => {
+        const body = JSON.parse(String(init?.body)) as { input: string[]; dimensions?: number; provider?: unknown };
+        bodies.push(body);
+        return jsonResponse({ data: body.input.map((_, index) => ({ index, embedding: [1, 0] })) });
+      }
+    );
+
+    expect(configured?.queryPrefix).toBe("Instruct: find hadith\nQuery: ");
+
+    await configured!.embed(["document text"]);
+    expect(bodies[0]).toMatchObject({
+      input: ["document text"],
+      dimensions: 1024,
+      provider: { order: ["DeepInfra", "Nebius"], allow_fallbacks: true }
+    });
+
+    const service = createSqliteHadithService(dbPath);
+    const searcher = createHybridSearcher({
+      service,
+      indexPath,
+      indexModel: provider.model,
+      provider: { ...configured!, embed: async (texts) => {
+        bodies.push({ input: texts });
+        return provider.embed(texts);
+      } }
+    });
+    await searcher.semanticSearchHadith({ query: "Muslim", language: "english" });
+    expect(bodies.at(-1)?.input[0]).toMatch(/^Instruct: find hadith\nQuery: /);
+
+    const plain = createEmbeddingProviderFromEnv({ EMBEDDINGS_BASE_URL: "https://embeddings.test/v1" }, async (_url, init) => {
+      const body = JSON.parse(String(init?.body)) as Record<string, unknown>;
+      expect(body).not.toHaveProperty("dimensions");
+      expect(body).not.toHaveProperty("provider");
+      return jsonResponse({ data: [{ index: 0, embedding: [1, 0] }] });
+    });
+    expect(plain?.queryPrefix).toBeUndefined();
+    await plain!.embed(["a"]);
+  });
+
   it("retries overloaded and server errors, but not client errors", async () => {
     const statuses = [429, 503];
     let calls = 0;

@@ -168,7 +168,7 @@ export function createHybridSearcher(options: HybridSearcherOptions): HybridSear
 
       try {
         index = await getIndex(options.indexPath, options.indexModel ?? options.provider.model);
-        const [queryVector] = await options.provider.embed([embeddingQueryText(args.query)]);
+        const [queryVector] = await options.provider.embed([(options.provider.queryPrefix ?? "") + embeddingQueryText(args.query)]);
 
         if (!queryVector) {
           throw new Error("embedding provider returned no vector for the query.");

@@ -77,6 +77,9 @@ Configuration (server environment):
 - `HADITH_MCP_VECTOR_WEIGHT`: default hybrid vector weight (0..1).
 - `OLLAMA_URL` (default `http://127.0.0.1:11434`), `EMBEDDINGS_MODEL` (default `bge-m3`), `EMBEDDINGS_TIMEOUT_MS`.
 - `EMBEDDINGS_BASE_URL`, `EMBEDDINGS_API_KEY` for the OpenAI-compatible provider.
+- `EMBEDDINGS_DIMENSIONS`: requested vector size for models trained to be truncated (e.g. Qwen3-Embedding at `1024`).
+- `EMBEDDINGS_QUERY_PREFIX`: text put before search queries only, for instruction-tuned models. A literal `\n` becomes a newline, e.g. `Instruct: Given a question, retrieve hadith passages that answer it\nQuery: `.
+- `EMBEDDINGS_PROVIDER_ORDER`: comma-separated OpenRouter providers to try first, e.g. `DeepInfra` (sent with `allow_fallbacks: true`).
 - `EMBEDDINGS_INDEX_MODEL`: the model name the index was built under, when the query API names the same model differently. For example, an index built with Ollama as `bge-m3` can be queried through OpenRouter (`EMBEDDINGS_BASE_URL=https://openrouter.ai/api/v1`, `EMBEDDINGS_MODEL=baai/bge-m3`) with `EMBEDDINGS_INDEX_MODEL=bge-m3`. Defaults to `EMBEDDINGS_MODEL`.
 
 The query must be embedded with the same model that built the index; a mismatch falls back to full-text search. Ollama's `bge-m3` and OpenRouter's `baai/bge-m3` return the same vectors (cosine similarity 0.99999 on sample texts), so one index works with either.
