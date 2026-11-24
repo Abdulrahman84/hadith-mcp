@@ -1,4 +1,24 @@
-export { createHadithMcpServer, createHadithServiceFromEnv, type HadithMcpServerOptions } from "./server.js";
+export {
+  createHadithMcpServer,
+  createHadithServiceFromEnv,
+  createHybridSearcherFromEnv,
+  type HadithMcpServerOptions
+} from "./server.js";
+export {
+  createEmbeddingProviderFromEnv,
+  createFakeEmbeddingProvider,
+  createOllamaEmbeddingProvider,
+  createOpenAiCompatibleEmbeddingProvider,
+  type EmbeddingProvider
+} from "./embeddings/provider.js";
+export { buildEmbeddingIndex, loadEmbeddingIndex, type LoadedEmbeddingIndex } from "./embeddings/store.js";
+export { reciprocalRankFusion } from "./search/rrf.js";
+export {
+  createHybridSearcher,
+  type HybridSearcher,
+  type HybridSearchOutput,
+  type HybridSearchResult
+} from "./search/hybrid-search.js";
 export {
   createFixtureHadithService,
   fetchHadith,

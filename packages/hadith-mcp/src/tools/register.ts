@@ -9,8 +9,11 @@ import {
   referenceInputShape,
   searchHadithInputShape,
   searchHadithOutputShape,
+  semanticSearchHadithInputShape,
+  semanticSearchHadithOutputShape,
   validateReferenceOutputShape
 } from "../schemas.js";
+import { createHybridSearcher, type HybridSearcher } from "../search/hybrid-search.js";
 import {
   fetchHadith,
   getHadithGrade,
@@ -25,8 +28,8 @@ function jsonText(value: unknown) {
   return [{ type: "text" as const, text: JSON.stringify(value, null, 2) }];
 }
 
-export function registerHadithTools(server: McpServer, service?: HadithService): void {
-  const tools = service ?? {
+export function registerHadithTools(server: McpServer, service?: HadithService, hybridSearch?: HybridSearcher): void {
+  const tools: HadithService = service ?? {
     fetchHadith,
     getHadithGrade,
     getHadithMetadata,
@@ -34,6 +37,7 @@ export function registerHadithTools(server: McpServer, service?: HadithService):
     searchHadith,
     validateHadithReference
   };
+  const hybrid = hybridSearch ?? createHybridSearcher({ service: tools });
 
   server.registerTool(
     "list_collections",
@@ -73,6 +77,21 @@ export function registerHadithTools(server: McpServer, service?: HadithService):
     },
     async (args) => {
       const structuredContent = tools.searchHadith(args);
+      return { content: jsonText(structuredContent), structuredContent };
+    }
+  );
+
+  server.registerTool(
+    "semantic_search_hadith",
+    {
+      title: "Hybrid Semantic Hadith Search",
+      description:
+        "Search hadith by meaning and wording: fuses full-text and embedding similarity results with reciprocal rank fusion. Falls back to full-text search when no embedding index is configured. Returns snippets and citations only.",
+      inputSchema: semanticSearchHadithInputShape,
+      outputSchema: semanticSearchHadithOutputShape
+    },
+    async (args) => {
+      const structuredContent = await hybrid.semanticSearchHadith(args);
       return { content: jsonText(structuredContent), structuredContent };
     }
   );

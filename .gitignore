@@ -17,6 +17,8 @@ apps/docs/out/
 *.db
 *.db-shm
 *.db-wal
+*.sqlite-shm
+*.sqlite-wal
 data/generated/*.sqlite
 data/generated/*.sqlite3
 data/generated/*.db
