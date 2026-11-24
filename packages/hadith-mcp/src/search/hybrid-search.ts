@@ -45,6 +45,8 @@ export type HybridSearcherOptions = {
   service: HadithService;
   indexPath?: string | null | undefined;
   provider?: EmbeddingProvider | null | undefined;
+  /** Model name the index stores vectors under. Defaults to the provider's model. */
+  indexModel?: string | undefined;
   ftsCandidates?: number;
   vectorCandidates?: number;
   rrfK?: number;
@@ -165,7 +167,7 @@ export function createHybridSearcher(options: HybridSearcherOptions): HybridSear
       let index: LoadedEmbeddingIndex;
 
       try {
-        index = await getIndex(options.indexPath, options.provider.model);
+        index = await getIndex(options.indexPath, options.indexModel ?? options.provider.model);
         const [queryVector] = await options.provider.embed([embeddingQueryText(args.query)]);
 
         if (!queryVector) {

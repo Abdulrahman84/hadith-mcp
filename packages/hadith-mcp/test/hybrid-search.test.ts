@@ -116,6 +116,21 @@ describe("embedding index build", () => {
     expect(calls).toBe(0);
   });
 
+  it("reports missing vectors in check mode without embedding", async () => {
+    const result = await buildEmbeddingIndex({
+      sourceDbPath: dbPath,
+      outPath: indexPath,
+      provider,
+      model: "not-built-yet",
+      checkOnly: true
+    });
+
+    expect(result).toMatchObject({ model: "not-built-yet", total: 3, skipped: 0, pending: 3, embedded: 0 });
+
+    const current = await buildEmbeddingIndex({ sourceDbPath: dbPath, outPath: indexPath, provider, checkOnly: true });
+    expect(current).toMatchObject({ total: 3, skipped: 3, pending: 0 });
+  });
+
   it("refuses an index for a different model", async () => {
     await expect(loadEmbeddingIndex(indexPath, "other-model")).rejects.toThrow(/no vectors for model other-model/);
   });
@@ -133,6 +148,20 @@ describe("hybrid semantic search", () => {
     expect(output.results[0]?.scores).toMatchObject({ fts_rank: null, vector_rank: 1 });
     expect(output.results[0]?.english_text).toContain("fixture Muslim text");
     expect(output.results.map((result) => result.rank)).toEqual(output.results.map((_, index) => index + 1));
+  });
+
+  it("loads the index under indexModel when the query API names the model differently", async () => {
+    const service = createSqliteHadithService(dbPath);
+    const renamed: EmbeddingProvider = { ...provider, model: "vendor/" + provider.model };
+    const searcher = createHybridSearcher({ service, indexPath, provider: renamed, indexModel: provider.model });
+    const output = await searcher.semanticSearchHadith({ query: "Muslim zzzunmatched", language: "english" });
+
+    expect(output.mode).toBe("hybrid");
+    expect(output.results[0]?.collection).toBe("muslim");
+
+    const unmapped = createHybridSearcher({ service, indexPath, provider: renamed });
+    const fallback = await unmapped.semanticSearchHadith({ query: "Muslim zzzunmatched", language: "english" });
+    expect(fallback.mode).toBe("fts_fallback");
   });
 
   it("fuses full-text and vector ranks for the same record", async () => {

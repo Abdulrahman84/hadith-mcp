@@ -21,6 +21,8 @@ export function createHadithServiceFromEnv(env: NodeJS.ProcessEnv = process.env)
 /**
  * HADITH_MCP_EMBEDDINGS_PATH points at the file built by `npm run build:embeddings`.
  * Without it, semantic_search_hadith answers with full-text results and says so.
+ * EMBEDDINGS_INDEX_MODEL names the model the index was built under when the query API uses a
+ * different name for the same model (e.g. an index built as "bge-m3" with Ollama, queried as "baai/bge-m3").
  */
 export function createHybridSearcherFromEnv(service: HadithService, env: NodeJS.ProcessEnv = process.env): HybridSearcher {
   const indexPath = env.HADITH_MCP_EMBEDDINGS_PATH?.trim() || null;
@@ -31,6 +33,7 @@ export function createHybridSearcherFromEnv(service: HadithService, env: NodeJS.
     service,
     indexPath,
     provider: indexPath === null ? null : createEmbeddingProviderFromEnv(env),
+    indexModel: env.EMBEDDINGS_INDEX_MODEL?.trim() || undefined,
     defaultVectorWeight: Number.isFinite(weight) ? weight : undefined
   });
 }

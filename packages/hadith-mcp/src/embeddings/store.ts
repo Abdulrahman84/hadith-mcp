@@ -50,8 +50,12 @@ export type BuildEmbeddingIndexOptions = {
   sourceDbPath: string;
   outPath: string;
   provider: EmbeddingProvider;
+  /** Name the vectors are stored under. Defaults to the provider's model. */
+  model?: string | undefined;
   batchSize?: number;
   limit?: number;
+  /** Count what is missing or stale without embedding or writing anything. */
+  checkOnly?: boolean;
   onProgress?: (progress: { embedded: number; skipped: number; total: number }) => void;
 };
 
@@ -62,6 +66,8 @@ export type BuildEmbeddingIndexResult = {
   embedded: number;
   skipped: number;
   removed: number;
+  /** Hadith whose vector is missing or stale. Only set by checkOnly runs. */
+  pending?: number;
 };
 
 function vectorToBlob(vector: Float32Array): Uint8Array {
@@ -115,8 +121,12 @@ export async function buildEmbeddingIndex(options: BuildEmbeddingIndexOptions): 
   }
 
   const source = new DatabaseSync(sourcePath, { readOnly: true });
+  if (options.checkOnly && !existsSync(path.resolve(options.outPath))) {
+    throw new Error(`Embedding index not found: ${path.resolve(options.outPath)}`);
+  }
+
   const store = await openEmbeddingStore(options.outPath);
-  const model = options.provider.model;
+  const model = options.model?.trim() || options.provider.model;
   const batchSize = Math.max(1, options.batchSize ?? 32);
 
   try {
@@ -141,6 +151,10 @@ export async function buildEmbeddingIndex(options: BuildEmbeddingIndexOptions): 
     let embedded = 0;
     let dims: number | null =
       (store.prepare("SELECT dims FROM hadith_embeddings WHERE model = ? LIMIT 1").get(model) as { dims?: number } | undefined)?.dims ?? null;
+
+    if (options.checkOnly) {
+      return { model, dims, total, embedded, skipped, removed: 0, pending: pending.length };
+    }
 
     const upsert = store.prepare(`
 INSERT INTO hadith_embeddings (hadith_id, model, dims, collection, hadith_number, text_hash, vector)
