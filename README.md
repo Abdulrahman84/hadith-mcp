@@ -71,6 +71,8 @@ node packages/hadith-mcp/dist/cli.js
 
 `build:embeddings` reads `HADITH_MCP_DB_PATH` (default `data/generated/hadith-meeatif.sqlite`) and writes `data/generated/hadith-embeddings.sqlite`. Pass `-- --db <path> --out <path> --batch-size 32 --limit 100` to override. The build is resumable: rerunning it only embeds hadith whose text or embedding recipe changed. Use `EMBEDDINGS_PROVIDER=openai` with `EMBEDDINGS_BASE_URL`, `EMBEDDINGS_API_KEY` and `EMBEDDINGS_MODEL` to build with a hosted embedding API instead of Ollama; the server must then embed queries with the same model.
 
+To verify an existing index against the database without embedding anything (for example after downloading a prebuilt index), run `node packages/hadith-mcp/dist/build-embeddings.js --check`. It exits non-zero when more than `--max-stale-ratio` (default 0.01) of hadith have a missing or stale vector. Set `EMBEDDINGS_INDEX_MODEL` when the index was stored under a different model name than the query API uses.
+
 Each hadith gets one vector from its Arabic text (harakat removed, isnad kept because the dataset has no reliable isnad/matn boundary) followed by its English translation. Search is exact cosine similarity over the index loaded into memory (about 140 MB for 34k hadith at 1024 dimensions), which needs Node 22.13 or newer for `node:sqlite`.
 
 The docs website lives in `apps/docs` and is built with Next.js and Tailwind CSS. During development it runs at `http://127.0.0.1:3000` by default. Arabic is the default page at `/`, with English at `/en`.
