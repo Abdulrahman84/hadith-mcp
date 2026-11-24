@@ -19,6 +19,7 @@ The project goal is to give AI assistants and developer tools a strict source la
 - `list_collections`
 - `fetch_hadith`
 - `search_hadith`
+- `semantic_search_hadith` (hybrid full-text + embedding search)
 - `validate_hadith_reference`
 - `get_hadith_metadata`
 - `get_hadith_grade`
@@ -55,6 +56,22 @@ The fixture SQLite command writes a synthetic non-release database to `data/gene
 The meeAtif SQLite command writes a local candidate database to `data/generated/hadith-meeatif.sqlite` and import reports to `data/generated/hadith-meeatif-import-report.{json,md}` after the project owner accepted the source-chain risk for local v1 import work. Set `HADITH_MCP_DB_PATH` to this database path to run SQLite-backed MCP tools locally. Generated SQLite artifacts remain ignored by git until a later release decision includes the required data-license notice.
 
 The meeAtif importer uses in-book references as canonical `hadith_number` values, such as `10:1`, rather than simple collection-wide numbers. SQLite-backed lookup also accepts collection-prefixed references such as `bukhari:10:1` and source references such as `https://sunnah.com/bukhari:603` or `bukhari:603` when the source row provides them. Use `validate_hadith_reference` for suggestions when an exact lookup misses.
+
+### Semantic search embeddings
+
+`semantic_search_hadith` needs a vector index built from the SQLite database. The index is a separate file, so the source database is never modified.
+
+```bash
+ollama pull bge-m3
+npm run build:embeddings
+HADITH_MCP_DB_PATH=data/generated/hadith-meeatif.sqlite \
+HADITH_MCP_EMBEDDINGS_PATH=data/generated/hadith-embeddings.sqlite \
+node packages/hadith-mcp/dist/cli.js
+```
+
+`build:embeddings` reads `HADITH_MCP_DB_PATH` (default `data/generated/hadith-meeatif.sqlite`) and writes `data/generated/hadith-embeddings.sqlite`. Pass `-- --db <path> --out <path> --batch-size 32 --limit 100` to override. The build is resumable: rerunning it only embeds hadith whose text or embedding recipe changed. Use `EMBEDDINGS_PROVIDER=openai` with `EMBEDDINGS_BASE_URL`, `EMBEDDINGS_API_KEY` and `EMBEDDINGS_MODEL` to build with a hosted embedding API instead of Ollama; the server must then embed queries with the same model.
+
+Each hadith gets one vector from its Arabic text (harakat removed, isnad kept because the dataset has no reliable isnad/matn boundary) followed by its English translation. Search is exact cosine similarity over the index loaded into memory (about 140 MB for 34k hadith at 1024 dimensions), which needs Node 22.13 or newer for `node:sqlite`.
 
 The docs website lives in `apps/docs` and is built with Next.js and Tailwind CSS. During development it runs at `http://127.0.0.1:3000` by default. Arabic is the default page at `/`, with English at `/en`.
 
