@@ -17,7 +17,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:embeddings": "npm run build && node dist/build-embeddings.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.29.0",
