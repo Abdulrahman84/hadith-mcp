@@ -125,7 +125,10 @@ export async function buildEmbeddingIndex(options: BuildEmbeddingIndexOptions): 
     throw new Error(`Embedding index not found: ${path.resolve(options.outPath)}`);
   }
 
-  const store = await openEmbeddingStore(options.outPath);
+  // Check-only runs never write: a downloaded index must keep its checksum.
+  const store = options.checkOnly
+    ? new DatabaseSync(path.resolve(options.outPath), { readOnly: true })
+    : await openEmbeddingStore(options.outPath);
   const model = options.model?.trim() || options.provider.model;
   const batchSize = Math.max(1, options.batchSize ?? 32);
 
@@ -226,9 +229,11 @@ ON CONFLICT (hadith_id, model) DO UPDATE SET
     return { model, dims, total, embedded, skipped, removed };
   } finally {
     source.close();
-    // Leave a single self-contained file (no -wal/-shm) so read-only loads and copies work.
-    store.exec("PRAGMA wal_checkpoint(TRUNCATE);");
-    store.exec("PRAGMA journal_mode = DELETE;");
+    if (!options.checkOnly) {
+      // Leave a single self-contained file (no -wal/-shm) so read-only loads and copies work.
+      store.exec("PRAGMA wal_checkpoint(TRUNCATE);");
+      store.exec("PRAGMA journal_mode = DELETE;");
+    }
     store.close();
   }
 }

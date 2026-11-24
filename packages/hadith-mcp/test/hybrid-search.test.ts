@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -127,8 +127,10 @@ describe("embedding index build", () => {
 
     expect(result).toMatchObject({ model: "not-built-yet", total: 3, skipped: 0, pending: 3, embedded: 0 });
 
+    const before = readFileSync(indexPath);
     const current = await buildEmbeddingIndex({ sourceDbPath: dbPath, outPath: indexPath, provider, checkOnly: true });
     expect(current).toMatchObject({ total: 3, skipped: 3, pending: 0 });
+    expect(readFileSync(indexPath).equals(before)).toBe(true);
   });
 
   it("refuses an index for a different model", async () => {
