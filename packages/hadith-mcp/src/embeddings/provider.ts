@@ -39,13 +39,39 @@ function isNumberArray(value: unknown): value is number[] {
   return Array.isArray(value) && value.every((item) => typeof item === "number");
 }
 
+// Hosted embedding APIs occasionally answer "overloaded" (HTTP 429) or a 5xx; a quick retry
+// almost always succeeds, so a search does not drop to full-text over a momentary hiccup.
+const retryDelaysMs = [250, 750];
+const maxRetryAfterMs = 2_000;
+
+function isRetryableStatus(status: number): boolean {
+  return status === 429 || status >= 500;
+}
+
+function retryDelay(response: Response, attempt: number): number {
+  const retryAfter = Number.parseFloat(response.headers.get("retry-after") ?? "");
+  const fallback = retryDelaysMs[attempt] ?? retryDelaysMs[retryDelaysMs.length - 1]!;
+  return Number.isFinite(retryAfter) && retryAfter >= 0 ? Math.min(retryAfter * 1000, maxRetryAfterMs) : fallback;
+}
+
 async function postJson(fetchImpl: FetchLike, url: string, body: unknown, headers: Record<string, string>, timeoutMs: number) {
-  const response = await fetchImpl(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...headers },
-    body: JSON.stringify(body),
-    signal: AbortSignal.timeout(timeoutMs)
-  });
+  let response: Response;
+
+  for (let attempt = 0; ; attempt += 1) {
+    response = await fetchImpl(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...headers },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(timeoutMs)
+    });
+
+    if (response.ok || !isRetryableStatus(response.status) || attempt >= retryDelaysMs.length) {
+      break;
+    }
+
+    await response.body?.cancel().catch(() => undefined);
+    await new Promise((resolve) => setTimeout(resolve, retryDelay(response, attempt)));
+  }
 
   if (!response.ok) {
     const detail = (await response.text().catch(() => "")).slice(0, 300);

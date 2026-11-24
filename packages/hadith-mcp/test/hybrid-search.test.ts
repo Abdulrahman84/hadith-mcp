@@ -347,6 +347,51 @@ describe("embedding providers", () => {
     await expect(ollama.embed(["a"])).rejects.toThrow(/HTTP 404: model not found/);
   });
 
+  it("retries overloaded and server errors, but not client errors", async () => {
+    const statuses = [429, 503];
+    let calls = 0;
+    const flaky = createOpenAiCompatibleEmbeddingProvider({
+      baseUrl: "https://embeddings.test/v1",
+      model: "m",
+      fetchImpl: async () => {
+        const status = statuses[calls];
+        calls += 1;
+        return status === undefined
+          ? jsonResponse({ data: [{ index: 0, embedding: [1, 0] }] })
+          : new Response("engine overloaded", { status, headers: { "Retry-After": "0" } });
+      }
+    });
+
+    expect(Array.from((await flaky.embed(["a"]))[0] ?? [])).toEqual([1, 0]);
+    expect(calls).toBe(3);
+
+    let alwaysCalls = 0;
+    const overloaded = createOpenAiCompatibleEmbeddingProvider({
+      baseUrl: "https://embeddings.test/v1",
+      model: "m",
+      fetchImpl: async () => {
+        alwaysCalls += 1;
+        return new Response("engine overloaded", { status: 429, headers: { "Retry-After": "0" } });
+      }
+    });
+
+    await expect(overloaded.embed(["a"])).rejects.toThrow(/HTTP 429/);
+    expect(alwaysCalls).toBe(3);
+
+    let badRequestCalls = 0;
+    const invalid = createOpenAiCompatibleEmbeddingProvider({
+      baseUrl: "https://embeddings.test/v1",
+      model: "m",
+      fetchImpl: async () => {
+        badRequestCalls += 1;
+        return new Response("bad input", { status: 400 });
+      }
+    });
+
+    await expect(invalid.embed(["a"])).rejects.toThrow(/HTTP 400/);
+    expect(badRequestCalls).toBe(1);
+  });
+
   it("selects the provider from the environment", () => {
     expect(createEmbeddingProviderFromEnv({})?.name).toBe("ollama");
     expect(createEmbeddingProviderFromEnv({ EMBEDDINGS_MODEL: "custom" })?.model).toBe("custom");
