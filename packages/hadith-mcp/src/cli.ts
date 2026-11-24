@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { createHadithMcpServer, createHadithServiceFromEnv } from "./server.js";
+import { createHadithMcpServer, createHadithServiceFromEnv, createHybridSearcherFromEnv } from "./server.js";
 
 async function main(): Promise<void> {
   const dbPath = process.env.HADITH_MCP_DB_PATH;
-  const server = createHadithMcpServer({ service: createHadithServiceFromEnv() });
+  const service = createHadithServiceFromEnv();
+  const server = createHadithMcpServer({ service, hybridSearch: createHybridSearcherFromEnv(service) });
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error(

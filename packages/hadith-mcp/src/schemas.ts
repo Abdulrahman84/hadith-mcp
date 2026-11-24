@@ -85,6 +85,38 @@ export const searchHadithOutputShape = {
   provenance_notes: z.array(z.string())
 };
 
+export const semanticSearchHadithInputShape = {
+  ...searchHadithInputShape,
+  mode: z
+    .enum(["hybrid", "fts", "vector"])
+    .default("hybrid")
+    .describe("hybrid fuses full-text and vector results; fts or vector run one retriever alone for comparison."),
+  vector_weight: z
+    .number()
+    .min(0)
+    .max(1)
+    .optional()
+    .describe("Hybrid mode only: share of the fused score given to vector results (0..1). Defaults to HADITH_MCP_VECTOR_WEIGHT or 0.5.")
+};
+
+export const hybridScoresSchema = z.object({
+  rrf: z.number().nullable(),
+  fts_rank: z.number().int().positive().nullable(),
+  vector_rank: z.number().int().positive().nullable(),
+  vector_similarity: z.number().nullable()
+});
+
+export const hybridSearchResultSchema = searchResultSchema.extend({
+  scores: hybridScoresSchema
+});
+
+export const semanticSearchHadithOutputShape = {
+  ...searchHadithOutputShape,
+  mode: z.enum(["hybrid", "fts", "vector", "fts_fallback"]),
+  vector_weight: z.number().nullable(),
+  results: z.array(hybridSearchResultSchema)
+};
+
 export const validateReferenceOutputShape = {
   valid: z.boolean(),
   collection: z.string(),
@@ -138,6 +170,7 @@ export const referenceInputSchema = z.object(referenceInputShape);
 export const listCollectionsOutputSchema = z.object(listCollectionsOutputShape);
 export const fetchHadithOutputSchema = z.object(fetchHadithOutputShape);
 export const searchHadithOutputSchema = z.object(searchHadithOutputShape);
+export const semanticSearchHadithOutputSchema = z.object(semanticSearchHadithOutputShape);
 export const validateReferenceOutputSchema = z.object(validateReferenceOutputShape);
 export const metadataOutputSchema = z.object(metadataOutputShape);
 export const gradeOutputSchema = z.object(gradeOutputShape);
