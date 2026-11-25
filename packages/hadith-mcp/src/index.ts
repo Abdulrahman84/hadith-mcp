@@ -14,10 +14,12 @@ export {
 export { buildEmbeddingIndex, loadEmbeddingIndex, type LoadedEmbeddingIndex } from "./embeddings/store.js";
 export { reciprocalRankFusion } from "./search/rrf.js";
 export {
+  checkQueryEmbedding,
   createHybridSearcher,
   type HybridSearcher,
   type HybridSearchOutput,
-  type HybridSearchResult
+  type HybridSearchResult,
+  type QueryEmbeddingSource
 } from "./search/hybrid-search.js";
 export {
   createFixtureHadithService,
