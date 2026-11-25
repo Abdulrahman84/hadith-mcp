@@ -61,11 +61,18 @@ Inputs are the same as `search_hadith`, plus:
 
 - `mode` optional: `hybrid` (default), `fts`, or `vector`. The single-retriever modes exist to compare retrievers on the same query.
 - `vector_weight` optional, 0..1: in hybrid mode, the vector list's share of the weighted RRF score (score = Σ wᵢ / (60 + rankᵢ)); full-text gets `1 - vector_weight`. Defaults to `HADITH_MCP_VECTOR_WEIGHT`, else 0.5 (plain RRF).
+- `query_embedding` optional, an array of numbers: an embedding of `query` that the caller already computed, so the server doesn't embed it again. Use it when the same question is also embedded for another index (for example a Quran index), to make one embedding call instead of two. The vector must come from the same model as the index, with the same query text cleanup (harakat and tatweel removed, whitespace collapsed) and the same `EMBEDDINGS_QUERY_PREFIX`. It should be L2-normalized; the server normalizes it again anyway.
+- `query_embedding_model` optional: the model `query_embedding` was made with. It must be the index's model name (`EMBEDDINGS_INDEX_MODEL`, e.g. `bge-m3`) or the server's `EMBEDDINGS_MODEL` (e.g. `baai/bge-m3`).
+
+If `query_embedding` can't be used (no `query_embedding_model`, a different model, a different number of dimensions than the index, or an all-zero vector), the server ignores it, embeds the query itself as if no vector was given, and says why in `provenance_notes`. A server with no embedding provider (`EMBEDDINGS_PROVIDER=none`) can still search its index with a usable caller vector; otherwise it returns full-text results. A `query_embedding` that isn't an array of numbers fails input validation.
+
+Servers older than this argument ignore unknown arguments, so a caller can send `query_embedding` to any version: an older server just embeds the query itself. Check `query_embedding_source` in the output to see which happened.
 
 Returns the `search_hadith` output plus:
 
 - `mode`: the mode that ran, or `fts_fallback` when no embedding index or provider is available. The fallback reason is in `provenance_notes`.
 - `vector_weight`: the weight used (1 for vector mode, null for full-text results).
+- `query_embedding_source`: `caller` when the search used `query_embedding`, `server` when the server embedded the query, null for full-text results. Older servers don't return it.
 - `results[].scores`: `rrf`, `fts_rank`, `vector_rank`, `vector_similarity` (null where a list did not contain the record).
 
 Vector similarity only ranks candidates. It does not verify a quotation, so callers must still check the cited text.

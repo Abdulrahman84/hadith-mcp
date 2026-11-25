@@ -75,6 +75,8 @@ To verify an existing index against the database without embedding anything (for
 
 Each hadith gets one vector from its Arabic text (harakat removed, isnad kept because the dataset has no reliable isnad/matn boundary) followed by its English translation. Search is exact cosine similarity over the index loaded into memory (about 140 MB for 34k hadith at 1024 dimensions), which needs Node 22.13 or newer for `node:sqlite`.
 
+A client that already embedded the question with the same model (for example to search its own Quran index) can pass the vector as `query_embedding`, with `query_embedding_model`, and the server skips its own embedding call. A vector from another model or with other dimensions is ignored and the server embeds the query itself. See [docs/mcp-tools.md](docs/mcp-tools.md#semantic_search_hadith).
+
 The docs website lives in `apps/docs` and is built with Next.js and Tailwind CSS. During development it runs at `http://127.0.0.1:3000` by default. Arabic is the default page at `/`, with English at `/en`.
 
 ## Future Product Direction
