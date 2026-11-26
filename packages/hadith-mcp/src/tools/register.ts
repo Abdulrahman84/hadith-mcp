@@ -86,7 +86,7 @@ export function registerHadithTools(server: McpServer, service?: HadithService, 
     {
       title: "Hybrid Semantic Hadith Search",
       description:
-        "Search hadith by meaning and wording: fuses full-text and embedding similarity results with reciprocal rank fusion. Falls back to full-text search when no embedding index is configured. Returns snippets and citations only.",
+        "Search hadith by meaning and wording: fuses full-text and embedding similarity results with reciprocal rank fusion. A caller that already embedded the query can pass query_embedding and query_embedding_model to skip the server's embedding call. Falls back to full-text search when no embedding index is configured. Returns snippets and citations only.",
       inputSchema: semanticSearchHadithInputShape,
       outputSchema: semanticSearchHadithOutputShape
     },

@@ -7,6 +7,7 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import {
   buildEmbeddingIndex,
+  checkQueryEmbedding,
   createEmbeddingProviderFromEnv,
   createFakeEmbeddingProvider,
   createHadithMcpServer,
@@ -245,6 +246,200 @@ describe("hybrid semantic search", () => {
     expect(failingOutput.mode).toBe("fts_fallback");
     expect(failingOutput.provenance_notes.join(" ")).toContain("connection refused");
     expect(failingOutput.results[0]?.collection).toBe("tirmidhi");
+  });
+
+  it("searches with the caller's query_embedding instead of embedding the query", async () => {
+    const service = createSqliteHadithService(dbPath);
+    let embedCalls = 0;
+    const counting: EmbeddingProvider = {
+      ...provider,
+      async embed(texts) {
+        embedCalls += texts.length;
+        return provider.embed(texts);
+      }
+    };
+    const searcher = createHybridSearcher({ service, indexPath, provider: counting });
+    const query = { query: "Muslim zzzunmatched", language: "english" as const };
+    const [vector] = await provider.embed([query.query]);
+
+    const embedded = await searcher.semanticSearchHadith(query);
+    expect(embedCalls).toBe(1);
+    expect(embedded.query_embedding_source).toBe("server");
+
+    const supplied = await searcher.semanticSearchHadith({
+      ...query,
+      query_embedding: Array.from(vector!),
+      query_embedding_model: provider.model
+    });
+
+    expect(embedCalls).toBe(1);
+    expect(() => semanticSearchHadithOutputSchema.parse(supplied)).not.toThrow();
+    expect(supplied).toMatchObject({ mode: "hybrid", query_embedding_source: "caller" });
+    expect(supplied.results).toEqual(embedded.results);
+    expect(supplied.provenance_notes.join(" ")).toContain("via the caller's query_embedding");
+  });
+
+  it("embeds the query itself when the caller's vector does not fit the index", async () => {
+    const service = createSqliteHadithService(dbPath);
+    let embedCalls = 0;
+    const counting: EmbeddingProvider = {
+      ...provider,
+      async embed(texts) {
+        embedCalls += texts.length;
+        return provider.embed(texts);
+      }
+    };
+    const searcher = createHybridSearcher({ service, indexPath, provider: counting });
+    const query = { query: "Muslim zzzunmatched", language: "english" as const };
+    const [vector] = await provider.embed([query.query]);
+    const values = Array.from(vector!);
+    const cases = [
+      { args: { query_embedding: values, query_embedding_model: "other-model" }, reason: "made with other-model" },
+      { args: { query_embedding: values.slice(1), query_embedding_model: provider.model }, reason: "63 dimensions; the index has 64" },
+      { args: { query_embedding: values }, reason: "query_embedding_model is missing" },
+      { args: { query_embedding: values.map(() => 0), query_embedding_model: provider.model }, reason: "all zeros" }
+    ];
+
+    for (const { args, reason } of cases) {
+      const output = await searcher.semanticSearchHadith({ ...query, ...args });
+
+      expect(output).toMatchObject({ mode: "hybrid", query_embedding_source: "server" });
+      expect(output.results[0]?.collection).toBe("muslim");
+      expect(output.provenance_notes.join(" ")).toContain("Ignored the caller's query_embedding: ");
+      expect(output.provenance_notes.join(" ")).toContain(reason);
+    }
+
+    expect(embedCalls).toBe(cases.length);
+  });
+
+  it("accepts the provider's model name and normalizes the caller's vector", async () => {
+    const service = createSqliteHadithService(dbPath);
+    const renamed: EmbeddingProvider = {
+      ...provider,
+      model: "vendor/" + provider.model,
+      async embed() {
+        throw new Error("should not embed");
+      }
+    };
+    const searcher = createHybridSearcher({ service, indexPath, provider: renamed, indexModel: provider.model });
+    const [vector] = await provider.embed(["Muslim zzzunmatched"]);
+    const scaled = Array.from(vector!, (value) => value * 3);
+    const reference = await createHybridSearcher({ service, indexPath, provider }).semanticSearchHadith({
+      query: "Muslim zzzunmatched",
+      language: "english"
+    });
+
+    for (const model of [provider.model, renamed.model]) {
+      const output = await searcher.semanticSearchHadith({
+        query: "Muslim zzzunmatched",
+        language: "english",
+        query_embedding: scaled,
+        query_embedding_model: model
+      });
+
+      expect(output).toMatchObject({ mode: "hybrid", query_embedding_source: "caller" });
+      expect(output.results[0]?.collection).toBe("muslim");
+      expect(output.results[0]?.scores.vector_similarity).toBeCloseTo(reference.results[0]!.scores.vector_similarity!, 5);
+    }
+  });
+
+  it("searches the index with a caller's vector when the server has no embedding provider", async () => {
+    const service = createSqliteHadithService(dbPath);
+    const searcher = createHybridSearcher({ service, indexPath, provider: null });
+    const [vector] = await provider.embed(["Muslim zzzunmatched"]);
+    const query = { query: "Muslim zzzunmatched", language: "english" as const };
+
+    const supplied = await searcher.semanticSearchHadith({
+      ...query,
+      query_embedding: Array.from(vector!),
+      query_embedding_model: provider.model
+    });
+    expect(supplied).toMatchObject({ mode: "hybrid", query_embedding_source: "caller" });
+    expect(supplied.results[0]?.collection).toBe("muslim");
+
+    const misfit = await searcher.semanticSearchHadith({
+      ...query,
+      query_embedding: Array.from(vector!).slice(2),
+      query_embedding_model: provider.model
+    });
+    expect(misfit).toMatchObject({ mode: "fts_fallback", query_embedding_source: null });
+    expect(misfit.provenance_notes.join(" ")).toContain("No embedding provider is configured");
+
+    const without = await searcher.semanticSearchHadith(query);
+    expect(without.mode).toBe("fts_fallback");
+    expect(without.provenance_notes.join(" ")).toContain("no embedding provider configured");
+  });
+
+  it("checks a query embedding against the index", () => {
+    const index = { model: "bge-m3", dims: 2 };
+
+    expect(checkQueryEmbedding({ query_embedding: [3, 4], query_embedding_model: "bge-m3" }, index)).toEqual({
+      vector: Float32Array.from([0.6, 0.8])
+    });
+    expect(checkQueryEmbedding({ query_embedding: [3, 4], query_embedding_model: "baai/bge-m3" }, index, "baai/bge-m3")).toHaveProperty(
+      "vector"
+    );
+    expect(checkQueryEmbedding({ query_embedding: [3, 4], query_embedding_model: "baai/bge-m3" }, index)).toEqual({
+      reason: "it was made with baai/bge-m3, but the index holds bge-m3 vectors."
+    });
+    expect(checkQueryEmbedding({ query_embedding: [1, 2, 3], query_embedding_model: "bge-m3" }, index)).toEqual({
+      reason: "it has 3 dimensions; the index has 2."
+    });
+  });
+
+  it("takes query_embedding through the MCP tool", async () => {
+    const service = createSqliteHadithService(dbPath);
+    const server = createHadithMcpServer({
+      service,
+      hybridSearch: createHybridSearcher({
+        service,
+        indexPath,
+        provider: {
+          ...provider,
+          async embed() {
+            throw new Error("embedding API down");
+          }
+        }
+      })
+    });
+    const client = new Client({ name: "hadith-mcp-query-embedding-client", version: "0.0.0" });
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    const [vector] = await provider.embed(["Muslim zzzunmatched"]);
+
+    await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
+
+    try {
+      const supplied = await client.callTool({
+        name: "semantic_search_hadith",
+        arguments: {
+          query: "Muslim zzzunmatched",
+          language: "english",
+          limit: 1,
+          query_embedding: Array.from(vector!),
+          query_embedding_model: provider.model
+        }
+      });
+      expect(supplied.structuredContent).toMatchObject({
+        mode: "hybrid",
+        query_embedding_source: "caller",
+        results: [{ collection: "muslim", rank: 1 }]
+      });
+
+      const embedded = await client.callTool({
+        name: "semantic_search_hadith",
+        arguments: { query: "Muslim zzzunmatched", language: "english", limit: 1 }
+      });
+      expect(embedded.structuredContent).toMatchObject({ mode: "fts_fallback", query_embedding_source: null });
+
+      const malformed = await client.callTool({
+        name: "semantic_search_hadith",
+        arguments: { query: "Muslim", query_embedding: ["not", "numbers"], query_embedding_model: provider.model }
+      });
+      expect(malformed.isError).toBe(true);
+    } finally {
+      await client.close();
+      await server.close();
+    }
   });
 
   it("is exposed as an MCP tool", async () => {

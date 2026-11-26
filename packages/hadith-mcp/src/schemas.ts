@@ -85,6 +85,9 @@ export const searchHadithOutputShape = {
   provenance_notes: z.array(z.string())
 };
 
+/** bge-m3 has 1,024 dimensions and the largest common embedding models 4,096; this only bounds the payload. */
+export const maxQueryEmbeddingDims = 8192;
+
 export const semanticSearchHadithInputShape = {
   ...searchHadithInputShape,
   mode: z
@@ -96,7 +99,20 @@ export const semanticSearchHadithInputShape = {
     .min(0)
     .max(1)
     .optional()
-    .describe("Hybrid mode only: share of the fused score given to vector results (0..1). Defaults to HADITH_MCP_VECTOR_WEIGHT or 0.5.")
+    .describe("Hybrid mode only: share of the fused score given to vector results (0..1). Defaults to HADITH_MCP_VECTOR_WEIGHT or 0.5."),
+  query_embedding: z
+    .array(z.number())
+    .min(1)
+    .max(maxQueryEmbeddingDims)
+    .optional()
+    .describe(
+      "Optional embedding of `query` that the caller already computed, L2-normalized, made with the same model and EMBEDDINGS_QUERY_PREFIX as the server. The server then skips its own embedding call. Needs query_embedding_model; a vector whose model or dimensions don't match the index is ignored and the server embeds the query itself."
+    ),
+  query_embedding_model: z
+    .string()
+    .min(1)
+    .optional()
+    .describe("The model query_embedding was made with: the index's model name (EMBEDDINGS_INDEX_MODEL) or the server's EMBEDDINGS_MODEL.")
 };
 
 export const hybridScoresSchema = z.object({
@@ -114,6 +130,10 @@ export const semanticSearchHadithOutputShape = {
   ...searchHadithOutputShape,
   mode: z.enum(["hybrid", "fts", "vector", "fts_fallback"]),
   vector_weight: z.number().nullable(),
+  query_embedding_source: z
+    .enum(["caller", "server"])
+    .nullable()
+    .describe("Whether the vector search used the caller's query_embedding or embedded the query on the server; null for full-text results."),
   results: z.array(hybridSearchResultSchema)
 };
 
